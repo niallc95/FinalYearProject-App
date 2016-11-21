@@ -1,11 +1,18 @@
 package software_project.com.hoarder.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,17 +22,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
+
+import software_project.com.hoarder.Controller.AppController;
 import software_project.com.hoarder.R;
+
+import static android.R.attr.data;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
-    private TextView nameTxt, priceTxt;
+    TextView nameTxt, priceTxt, textView;
+    String serverUrl = "http://hoarder-app.herokuapp.com/findItem/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         nameTxt = (TextView) findViewById(R.id.scanContent);
         priceTxt = (TextView) findViewById(R.id.scanFormat);
+        textView = (TextView) findViewById(R.id.requestText);
 
         //Check if camera is enabled to allow barcode scanning and prompt the user if it is not enabled
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -52,6 +85,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    /**
+     * Check your device is connected to a network
+     */
+    private boolean isNetworkConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE); // 1
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo(); // 2
+        return networkInfo != null && networkInfo.isConnected(); // 3
     }
 
     /**
@@ -128,16 +172,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
 
-            //Add database integration here to grab scan data and relate to db to find name and price of item
-            if(scanContent != null && scanFormat != null) {
-                nameTxt.setText("item: "+scanContent);
-                priceTxt.setText("item:" +scanFormat);
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Item " + scanContent + " successfully added to cart!!", Toast.LENGTH_SHORT);
+            /**
+             * Send scan data to server
+             */
+            final RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, serverUrl+scanContent,
+
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            textView.setText(response);
+                            requestQueue.stop();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    textView.setText("Something went wrong");
+                    error.printStackTrace();
+                    requestQueue.stop();
+                }
+            });
+
+            requestQueue.add(stringRequest);
+
+            /**
+             * send data to server end
+             */
+            Toast toast = Toast.makeText(getApplicationContext(),
+                        "You have scanned " + scanContent, Toast.LENGTH_SHORT);
                 toast.show();
-            }
+
 
         }
         //Cannot find data toast
@@ -157,7 +222,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         integrator.setCameraId(0); //Use camera of current device
         integrator.initiateScan();
     }
+
     /**
      * Scanning function end
      */
+
 }

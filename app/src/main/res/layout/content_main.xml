@@ -16,10 +16,11 @@
 
     <RelativeLayout
         android:layout_height="350dp"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:background="@color/colorPrimary"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp">
 
         <ImageView
             app:srcCompat="@drawable/ic_nav_profile"
@@ -54,7 +55,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/icon_view"
             android:layout_width="140dp"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:elevation="14dp"
+            />
 
         <Button
             android:id="@+id/listBtn"
@@ -62,6 +65,17 @@
             android:layout_width="140dp"
             android:layout_alignBottom="@+id/cartBtn"
             android:layout_alignEnd="@+id/scanContent"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:elevation="14dp" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_marginBottom="17dp"
+            android:id="@+id/requestText"
+            android:layout_height="100dp"
+            android:layout_above="@+id/cartBtn"
+            android:layout_centerHorizontal="true"
+            android:textSize="30sp"/>
+
     </RelativeLayout>
 </RelativeLayout>

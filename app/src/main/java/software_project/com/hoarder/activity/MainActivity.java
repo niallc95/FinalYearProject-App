@@ -26,21 +26,27 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URI;
@@ -50,6 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import software_project.com.hoarder.Controller.AppController;
+import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
 import static android.R.attr.data;
@@ -58,15 +65,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextView nameTxt, priceTxt, textView;
     String serverUrl = "http://hoarder-app.herokuapp.com/findItem/";
+    private static int FIRST_ELEMENT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nameTxt = (TextView) findViewById(R.id.scanContent);
-        priceTxt = (TextView) findViewById(R.id.scanFormat);
-        textView = (TextView) findViewById(R.id.requestText);
+        nameTxt = (TextView) findViewById(R.id.scanName);
+        priceTxt = (TextView) findViewById(R.id.scanPrice);
 
         //Check if camera is enabled to allow barcode scanning and prompt the user if it is not enabled
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -171,24 +178,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
-            String scanContent = scanningResult.getContents();
+            final String scanContent = scanningResult.getContents();
 
             /**
              * Send scan data to server
              */
             final RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
             StringRequest stringRequest = new StringRequest(Request.Method.GET, serverUrl+scanContent,
-
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            textView.setText(response);
+
+                            try {
+                                //Store response string in JSONArray
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject itemObject = jsonArray.getJSONObject(0);
+                                String name = itemObject.optString("productName");
+                                String price = itemObject.optString("productPrice");
+                                if(name != null || name != "" && price != null || price != "") {
+                                    nameTxt.setText(name);
+                                    priceTxt.setText(price);
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            "You have scanned: " + name, Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }else {
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            "Error! Item does not exist!! ", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             requestQueue.stop();
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    textView.setText("Something went wrong");
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Barcode not recognised. Please try again!!", Toast.LENGTH_SHORT);
+                    toast.show();
                     error.printStackTrace();
                     requestQueue.stop();
                 }
@@ -199,11 +227,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             /**
              * send data to server end
              */
-            Toast toast = Toast.makeText(getApplicationContext(),
-                        "You have scanned " + scanContent, Toast.LENGTH_SHORT);
-                toast.show();
-
-
         }
         //Cannot find data toast
         else{

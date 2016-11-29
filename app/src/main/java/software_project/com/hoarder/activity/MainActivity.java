@@ -1,9 +1,6 @@
-package software_project.com.hoarder.activity;
+package software_project.com.hoarder.Activity;
 
 import android.Manifest;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,10 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,64 +17,71 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Map;
-
-import software_project.com.hoarder.Controller.AppController;
+import java.util.ArrayList;
+import software_project.com.hoarder.Adapter.ItemArrayAdapter;
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
-import static android.R.attr.data;
+/**
+ * Created by Niall on 27/09/2016.
+ * Main screen for the application which holds the scanning functionality
+ * This activity utilises a theme from styles.xml to insure the user is not waiting while the app is loading.
+ */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
-
-    TextView nameTxt, priceTxt, textView;
+    TextView cost,content;
+    ListView cartList;
+    Button checkout, clear;
     String serverUrl = "http://hoarder-app.herokuapp.com/findItem/";
-    private static int FIRST_ELEMENT = 0;
+    ArrayList<Item> itemArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nameTxt = (TextView) findViewById(R.id.scanName);
-        priceTxt = (TextView) findViewById(R.id.scanPrice);
+        content = (TextView) findViewById(R.id.contentTxt);
+
+        itemArray = new ArrayList<Item>();
+        //Get listView item
+        cartList = (ListView) findViewById(R.id.cartView);
+        //Add divider for each listView item
+        cartList.setDivider(null);
+
+        // Create the adapter
+        final ItemArrayAdapter itemAdapter = new ItemArrayAdapter(this,itemArray);
+
+        // Attach the adapter to the studentListView
+        cartList.setAdapter(itemAdapter);
+
 
         //Check if camera is enabled to allow barcode scanning and prompt the user if it is not enabled
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
             }
+        }
+
+        if (isNetworkConnected()==false){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Error, Cannot connect to internet", Toast.LENGTH_SHORT);
+            toast.show();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,6 +95,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Set logo for app bar
+        android.support.v7.app.ActionBar appBar = getSupportActionBar();
+        appBar.setDisplayHomeAsUpEnabled(false);
+        appBar.setDisplayShowTitleEnabled(false);
+        appBar.setCustomView(R.layout.app_bar_top);
+        appBar.setDisplayShowCustomEnabled(true);
+
+        //Set buttons for clearing cart and checking out
+
+        clear = (Button) findViewById(R.id.clearBtn);
+        clear.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(itemArray.size() != 0){
+                    itemAdapter.clear();
+                    content.setText("(0 items):");
+                }else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Your cart is empty!!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
     }
 
     /**
@@ -141,6 +165,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Navigation intents for nav side bar
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -148,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
-            return true;
+            //startActivity(new Intent(MainActivity.this, MainActivity.class));
+            //return true;
         } else if (id == R.id.nav_shopping_list) {
 
         } else if (id == R.id.nav_shopping_cart) {
@@ -175,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
 
     //Grab the data once scanning is complete, compare with database and populate the fields
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    public void onActivityResult(int requestCode, final int resultCode, Intent intent) {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             final String scanContent = scanningResult.getContents();
@@ -190,22 +217,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public void onResponse(String response) {
 
                             try {
-                                //Store response string in JSONArray
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject itemObject = jsonArray.getJSONObject(0);
                                 String name = itemObject.optString("productName");
                                 String price = itemObject.optString("productPrice");
-                                if(name != null || name != "" && price != null || price != "") {
-                                    nameTxt.setText(name);
-                                    priceTxt.setText(price);
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            "You have scanned: " + name, Toast.LENGTH_SHORT);
-                                    toast.show();
+                                String category = itemObject.optString("productCategory");
+
+                                Item item = new Item(name,price,category);
+                                itemArray.add(item);
+                                if(itemArray.size()==1) {
+                                    content.setText("(" + Integer.toString(itemArray.size()) + " item):");
                                 }else {
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            "Error! Item does not exist!! ", Toast.LENGTH_SHORT);
-                                    toast.show();
+                                    content.setText("(" + Integer.toString(itemArray.size()) + " items):");
                                 }
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        name+" successfully added to cart!", Toast.LENGTH_SHORT);
+                                toast.show();
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -215,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Barcode not recognised. Please try again!!", Toast.LENGTH_SHORT);
+                            "Barcode not recognised or item does not exist. Please try again!!", Toast.LENGTH_SHORT);
                     toast.show();
                     error.printStackTrace();
                     requestQueue.stop();

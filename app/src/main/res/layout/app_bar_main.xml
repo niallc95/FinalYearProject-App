@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="software_project.com.hoarder.activity.MainActivity">
+    tools:context="software_project.com.hoarder.Activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -25,11 +25,14 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/scan"
-        android:layout_width="76dp"
-        android:layout_height="70dp"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|center"
         android:layout_margin="@dimen/scan_btn_margin"
         app:srcCompat="@drawable/ic_icon_scanner"
-        android:onClick="scanner"/>
+        android:onClick="scanner"
+        android:tint="@color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:elevation="11dp"
+        android:layout_height="60dp"
+        android:layout_width="60dp" />
 
 </android.support.design.widget.CoordinatorLayout>

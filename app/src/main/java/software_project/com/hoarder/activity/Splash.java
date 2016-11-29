@@ -1,4 +1,4 @@
-package software_project.com.hoarder.activity;
+package software_project.com.hoarder.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;

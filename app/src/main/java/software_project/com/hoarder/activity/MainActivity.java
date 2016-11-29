@@ -33,6 +33,8 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import software_project.com.hoarder.Adapter.ItemArrayAdapter;
 import software_project.com.hoarder.Object.Item;
@@ -56,13 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        content = (TextView) findViewById(R.id.contentTxt);
-
         itemArray = new ArrayList<Item>();
         //Get listView item
         cartList = (ListView) findViewById(R.id.cartView);
         //Add divider for each listView item
         cartList.setDivider(null);
+
+        content = (TextView) findViewById(R.id.contentTxt);
+        cost = (TextView) findViewById(R.id.totalTxt);
 
         // Create the adapter
         final ItemArrayAdapter itemAdapter = new ItemArrayAdapter(this,itemArray);
@@ -230,9 +233,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 }else {
                                     content.setText("(" + Integer.toString(itemArray.size()) + " items):");
                                 }
+                                //Find sum of all prices and display in the subTotal field
+                                double totalCost = 0;
+                                NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+                                for(int i = 0; i < itemArray.size(); i++)
+                                {
+                                    Float value=Float.parseFloat(itemArray.get(i).getPrice());
+                                    totalCost += value;
+                                }
+
+                                cost.setText(String.valueOf(currencyFormatter.format(totalCost)));
+
                                 Toast toast = Toast.makeText(getApplicationContext(),
                                         name+" successfully added to cart!", Toast.LENGTH_SHORT);
                                 toast.show();
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -272,6 +287,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         integrator.setScanningRectangle(900,600); // Wide box for barcode scanning added to camera view
         integrator.setCameraId(0); //Use camera of current device
         integrator.initiateScan();
+    }
+
+    public double getTotalCost() {
+
+            double totalCost = 0;
+            //BE SURE TO START TOTAL COST AT ZERO OR IT CANNOT ADD UP!!!
+            for(int i = 0; i < itemArray.size(); i++)
+            {
+                int value=Integer.parseInt(itemArray.get(i).getPrice().replace("€", ""));
+                totalCost += value;
+            }
+            //DON'T DO IT IN THE FOR LOOP OR THE RETURN STATEMENT WILL STOP IT!
+            return totalCost;
+
     }
 
     /**

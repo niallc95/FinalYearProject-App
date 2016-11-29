@@ -54,6 +54,8 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
             categoryView.setImageResource(R.drawable.ic_icon_soda);
         }else if(String.valueOf(item.getCat()).contains("Beverage")) {
             categoryView.setImageResource(R.drawable.ic_icon_beverage);
+        }else if(String.valueOf(item.getCat()).contains("Chocolate")) {
+            categoryView.setImageResource(R.drawable.ic_icon_choc);
         }else {
             categoryView.setImageResource(R.drawable.ic_no_image);
         }

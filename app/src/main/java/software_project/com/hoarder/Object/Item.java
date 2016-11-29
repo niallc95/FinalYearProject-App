@@ -10,15 +10,13 @@ public class Item {
     private String productName;
     private String productPrice;
     private String productCategory;
-    private String scanContent;
 
 
-    public Item(String productName, String productPrice, String productCategory, String scanContent){
+    public Item(String productName, String productPrice, String productCategory){
 
         this.productName = productName;
         this.productPrice = productPrice;
         this.productCategory = productCategory;
-        this.scanContent = scanContent;
     }
 
 

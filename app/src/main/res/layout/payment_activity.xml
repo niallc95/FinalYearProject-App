@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#efefef"
+    android:orientation="vertical"
+    tools:context=".Activity.PaymentActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@android:color/white">
+
+
+
+
+    </RelativeLayout>
+
+    <!-- Divider -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"></RelativeLayout>
+    <!-- Divider End -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:textSize="20sp"
+            android:text="Card details:"/>
+
+        <com.simplify.android.sdk.CardEditor
+            android:id="@+id/card_editor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            auto:enabled="true"
+            auto:iconColor="@color/icon"/>
+
+</LinearLayout>
+    <Button
+        android:id="@+id/payBtn"
+        android:text="Pay with simplify"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:layout_height="40dp"
+        android:background="@drawable/buttonshape"
+        android:layout_below="@+id/CostText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent" />
+</LinearLayout>

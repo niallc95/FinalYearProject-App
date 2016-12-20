@@ -31,6 +31,12 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".Activity.PaymentActivity"
+            android:label="@string/checkout_txt"
+            android:parentActivityName=".Activity.MainActivity">
+        </activity>
+
     </application>
 
 </manifest>

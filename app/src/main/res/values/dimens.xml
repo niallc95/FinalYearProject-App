@@ -6,4 +6,4 @@
     <dimen name="activity_horizontal_margin">10dp</dimen>
     <dimen name="activity_vertical_margin">10dp</dimen>
     <dimen name="scan_btn_margin">10dp</dimen>
-</resources>
+    </resources>

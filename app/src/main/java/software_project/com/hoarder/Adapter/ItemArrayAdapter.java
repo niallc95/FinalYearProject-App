@@ -27,7 +27,7 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
+        // Get the item data for this position
         Item item = getItem(position);
 
         // Inflate the view only if an existing view is not being reused
@@ -41,10 +41,11 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         TextView categoryTxt = (TextView) convertView.findViewById(R.id.descriptionTxt);
         ImageView categoryView = (ImageView) convertView.findViewById(R.id.categoryView);
 
-        // Populate the corresponding fields for each student
+        // Populate the corresponding fields for each item
         nameTxt.setText(String.valueOf(item.getName()));
         priceTxt.setText("€"+String.valueOf(item.getPrice()));
         categoryTxt.setText(String.valueOf(item.getCat()));
+
 
         if(String.valueOf(item.getCat()).contains("Crisps")) {
             categoryView.setImageResource(R.drawable.ic_icon_crisps);

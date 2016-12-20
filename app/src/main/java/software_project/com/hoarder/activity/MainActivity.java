@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Create the adapter
         final ItemArrayAdapter itemAdapter = new ItemArrayAdapter(this,itemArray);
 
-        // Attach the adapter to the studentListView
+        // Attach the adapter to the list view
         cartList.setAdapter(itemAdapter);
 
 
@@ -113,6 +113,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(itemArray.size() != 0){
                     itemAdapter.clear();
                     content.setText("(0 items):");
+                    cost.setText("€0.00");
+                }else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Your cart is empty!!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+
+        checkout = (Button) findViewById(R.id.checkoutBtn);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(itemArray.size() != 0){
+                    startActivity(new Intent(MainActivity.this, PaymentActivity.class));
                 }else {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Your cart is empty!!", Toast.LENGTH_SHORT);
@@ -227,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String category = itemObject.optString("productCategory");
 
                                 Item item = new Item(name,price,category);
+
                                 itemArray.add(item);
                                 if(itemArray.size()==1) {
                                     content.setText("(" + Integer.toString(itemArray.size()) + " item):");
@@ -241,6 +256,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     Float value=Float.parseFloat(itemArray.get(i).getPrice());
                                     totalCost += value;
                                 }
+
+
 
                                 cost.setText(String.valueOf(currencyFormatter.format(totalCost)));
 
@@ -287,20 +304,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         integrator.setScanningRectangle(900,600); // Wide box for barcode scanning added to camera view
         integrator.setCameraId(0); //Use camera of current device
         integrator.initiateScan();
-    }
-
-    public double getTotalCost() {
-
-            double totalCost = 0;
-            //BE SURE TO START TOTAL COST AT ZERO OR IT CANNOT ADD UP!!!
-            for(int i = 0; i < itemArray.size(); i++)
-            {
-                int value=Integer.parseInt(itemArray.get(i).getPrice().replace("€", ""));
-                totalCost += value;
-            }
-            //DON'T DO IT IN THE FOR LOOP OR THE RETURN STATEMENT WILL STOP IT!
-            return totalCost;
-
     }
 
     /**

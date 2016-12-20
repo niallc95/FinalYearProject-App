@@ -30,7 +30,7 @@
         app:srcCompat="@drawable/ic_icon_scanner"
         android:onClick="scanner"
         android:tint="@color/white"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/Red"
         app:elevation="11dp"
         android:layout_height="60dp"
         android:layout_width="60dp" />

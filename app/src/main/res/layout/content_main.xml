@@ -14,7 +14,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/Red"
         android:layout_height="3dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -73,7 +73,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/Red"
         android:layout_height="3dp"
         android:id="@+id/divider3"
         android:layout_below="@+id/cartView"
@@ -81,7 +81,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/Red"
         android:layout_height="3dp"
         android:id="@+id/view"
         android:layout_below="@+id/divider3"

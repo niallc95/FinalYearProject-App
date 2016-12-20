@@ -10,6 +10,7 @@ public class Item {
     private String productName;
     private String productPrice;
     private String productCategory;
+    //private int productQuantity;
 
 
     public Item(String productName, String productPrice, String productCategory){
@@ -17,6 +18,7 @@ public class Item {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productCategory = productCategory;
+        //this.productQuantity = productQuantity;
     }
 
 
@@ -29,7 +31,5 @@ public class Item {
     public String getCat() {
         return productCategory;
     }
-
-
-
+    //public int getQuantity() { return productQuantity;}
 }

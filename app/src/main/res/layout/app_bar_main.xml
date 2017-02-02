@@ -21,18 +21,21 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_main"
+        android:id="@+id/include" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/scan"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="@dimen/scan_btn_margin"
-        app:srcCompat="@drawable/ic_icon_scanner"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_icon_scan"
+        app:backgroundTint="@color/white"
+        android:id="@+id/floatingActionButton"
         android:onClick="scanner"
-        android:tint="@color/white"
-        app:backgroundTint="@color/Red"
-        app:elevation="11dp"
-        android:layout_height="60dp"
-        android:layout_width="60dp" />
+        android:layout_marginRight="40dp"
+        android:layout_gravity="center_vertical|left"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="top|right"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
 </android.support.design.widget.CoordinatorLayout>

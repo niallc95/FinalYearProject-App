@@ -1,62 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:auto="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efefef"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".Activity.PaymentActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/orderText"
+        android:text="Order summary"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/silver"
+        android:id="@+id/listDivider"
+        android:layout_below="@+id/orderText"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="6dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/checkoutList"
+        android:background="@color/white"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footerLayout"
+        android:layout_below="@+id/listDivider"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@android:color/white">
-
-
-
-
-    </RelativeLayout>
-
-    <!-- Divider -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"></RelativeLayout>
-    <!-- Divider End -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:background="@android:color/white">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:textSize="20sp"
-            android:text="Card details:"/>
+        android:id="@+id/footerLayout"
+        android:elevation="8dp"
+        android:background="@color/white"
+        android:layout_height="225dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
         <com.simplify.android.sdk.CardEditor
             android:id="@+id/card_editor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             auto:enabled="true"
-            auto:iconColor="@color/icon"/>
+            auto:iconColor="@color/icon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp" />
 
-</LinearLayout>
-    <Button
-        android:id="@+id/payBtn"
-        android:text="Pay with simplify"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:layout_height="40dp"
-        android:background="@drawable/buttonshape"
-        android:layout_below="@+id/CostText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent" />
-</LinearLayout>
+        <Button
+            android:id="@+id/payBtn"
+            android:text="Pay with simplify"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:background="@drawable/buttonshape"
+            android:layout_width="300dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="0.8dp"
+            android:id="@+id/cardEditorDivider"
+            android:layout_alignParentTop="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="0.8dp"
+            android:id="@+id/checkoutDivider"
+            android:layout_alignTop="@id/card_editor"/>
+
+        <TextView
+            android:text="€0.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/costTxtCheckout"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@+id/cardEditorDivider"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp" />
+
+        <TextView
+            android:text="TOTAL:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/totalHeader"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@+id/cardEditorDivider"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="85dp"/>
+
+        <TextView
+            android:text="Loyalty credit:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LoyaltyHeader"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@+id/cardEditorDivider"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="42dp" />
+
+        <TextView
+            android:text="€0.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loyaltyCreditTxt"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@+id/cardEditorDivider"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="124dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

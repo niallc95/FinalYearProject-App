@@ -10,8 +10,9 @@
     <color name="textPrimary">#212121</color>
     <color name="black">#212121</color>
     <color name="textSecondary">#757575</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorAccent">#106C2F</color>
     <color name="silver">#C0C0C0</color>
+    <color name="lightGrey">#d3d3d3</color>
     <color name="Red">#7f0000</color>
     <color name="lidl_yellow">#FFF100</color>
     <color name="lidl_blue">#2250A9</color>
@@ -20,7 +21,7 @@
     <color name="tesco_red">#F02E25</color>
     <color name="supervalu_red">#8D0023</color>
 
-    <color name="accent">#FF6600</color>
+    <color name="accent">#248645</color>
     <color name="icon">#666666</color>
 
     <color name="button_bg_disabled">#cbcbcc</color>

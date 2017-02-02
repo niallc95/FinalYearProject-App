@@ -3,32 +3,53 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_nav_home"
-            android:title="Home" />
-        <item
-            android:id="@+id/nav_shopping_list"
-            android:icon="@drawable/ic_nav_list"
-            android:title="Shopping List" />
-        <item
             android:id="@+id/nav_shopping_cart"
             android:icon="@drawable/ic_nav_cart"
             android:title="Shopping Cart" />
+        <item
+            android:id="@+id/nav_deals"
+            android:icon="@drawable/ic_nav_deals"
+            android:title="Hot Deals" />
+        <item
+            android:id="@+id/nav_signout"
+            android:icon="@drawable/ic_nav_signout"
+            android:title="Sign out" />
 
         <item android:title="Profile">
             <menu>
-                <item
-                    android:id="@+id/nav_profile"
-                    android:icon="@drawable/ic_nav_profile"
-                    android:title="Profile" />
+                <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_receipts"
                     android:icon="@drawable/ic_nav_receipt"
-                    android:title="Receipts" />
+                    android:title="Your Receipts" />
                 <item
-                    android:id="@+id/nav_loyalty"
-                    android:icon="@drawable/ic_nav_loyalty"
-                    android:title="Loyalty Points" />
+                    android:id="@+id/nav_profile"
+                    android:icon="@drawable/ic_nav_profile"
+                    android:title="Your Account" />
+                <item
+                    android:id="@+id/nav_shopping_list"
+                    android:icon="@drawable/ic_nav_list"
+                    android:title="Receipts" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="More">
+            <menu>
+                <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_customer_service"
+                    android:icon="@drawable/ic_nav_service"
+                    android:title="Customer Service" />
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/ic_nav_about"
+                    android:title="About us" />
+                <item
+                    android:id="@+id/nav_locations"
+                    android:icon="@drawable/ic_nav_location"
+                    android:title="Hoarder locations" />
+                </group>
             </menu>
         </item>
     </group>

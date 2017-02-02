@@ -1,11 +1,13 @@
 package software_project.com.hoarder.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by Niall on 21/11/2016.
  */
 
 
-public class Item {
+public class Item implements Serializable{
 
     private String productName;
     private String productPrice;

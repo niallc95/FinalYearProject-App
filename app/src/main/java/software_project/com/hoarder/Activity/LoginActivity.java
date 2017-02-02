@@ -1,48 +1,71 @@
 package software_project.com.hoarder.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import android.content.Intent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import software_project.com.hoarder.R;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-
-    @InjectView(R.id.input_email) EditText _emailText;
-    @InjectView(R.id.input_password) EditText _passwordText;
-    @InjectView(R.id.btn_login) Button _loginButton;
-    @InjectView(R.id.link_signup) TextView _signupLink;
+    Button loginBtn;
+    TextView signupLink;
+    EditText passwordText;
+    EditText emailText;
+    String serverUrl = "http://hoarder-app.herokuapp.com/login";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
+        emailText = (EditText) findViewById(R.id.input_email);
+        passwordText = (EditText) findViewById(R.id.input_password);
+        loginBtn = (Button) findViewById(R.id.btn_login);
+        signupLink = (TextView) findViewById(R.id.link_signup);
 
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+                login();
             }
         });
 
-        _signupLink.setOnClickListener(new View.OnClickListener() {
+        signupLink.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 // Start the Signup activity
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
@@ -50,88 +73,95 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //Login request to server functionality
     public void login() {
-        Log.d(TAG, "Login");
-
         if (!validate()) {
             onLoginFailed();
             return;
         }
+        loginBtn.setEnabled(false);
 
-        _loginButton.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_NoActionBar);
+        final ProgressDialog progressDialog = ProgressDialog.show(this, null, null, true, false);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
+        progressDialog.setContentView(R.layout.progress_layout);
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        final RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
+        final String email = emailText.getText().toString();
+        String password = passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
+        Map<String, String> jsonParams = new HashMap<>();
+            jsonParams.put("email", email);
+            jsonParams.put("password", password);
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+        JsonObjectRequest postRequest = new JsonObjectRequest( Request.Method.POST, serverUrl,
+
+                new JSONObject(jsonParams),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "You are successfully logged in!!", Toast.LENGTH_SHORT);
+                        toast.show();
                         progressDialog.dismiss();
+                        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        loginIntent.putExtra("email", email);
+                        startActivity(loginIntent);
+                        finish();
                     }
-                }, 3000);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Login credentials incorrect. Please try again!!", Toast.LENGTH_SHORT);
+                        toast.show();
+                        error.printStackTrace();
+                        progressDialog.dismiss();
+                        loginBtn.setEnabled(true);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
             }
-        }
+        };
+        requestQueue.add(postRequest);
     }
 
     @Override
     public void onBackPressed() {
-        // disable going back to the MainActivity
+        // back press disable
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
-        finish();
-    }
-
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
-        _loginButton.setEnabled(true);
+        Toast.makeText(getBaseContext(), "Login failed. Please try again!!", Toast.LENGTH_LONG).show();
+        loginBtn.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String email = emailText.getText().toString();
+        String password = passwordText.getText().toString();
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+        if (email.isEmpty()||!email.contains("@")){
+            emailText.setError("enter a valid email address");
             valid = false;
         } else {
-            _emailText.setError(null);
+            emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
-            _passwordText.setError(null);
+            passwordText.setError(null);
         }
-
         return valid;
     }
 }

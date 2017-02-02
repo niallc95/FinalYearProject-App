@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import software_project.com.hoarder.Adapter.ItemArrayAdapter;
+import software_project.com.hoarder.Adapter.CartArrayAdapter;
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
@@ -46,33 +47,46 @@ import software_project.com.hoarder.R;
  * This activity utilises a theme from styles.xml to insure the user is not waiting while the app is loading.
  */
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
-    TextView cost,content;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    TextView cost,content,vat,emailHeader;
     ListView cartList;
     Button checkout, clear;
     String serverUrl = "http://hoarder-app.herokuapp.com/findItem/";
     ArrayList<Item> itemArray;
+    View emptyView;
+    String email;
+    double totalCost,vatValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        itemArray = new ArrayList<Item>();
+        itemArray = new ArrayList<>();
         //Get listView item
-        cartList = (ListView) findViewById(R.id.cartView);
+        cartList = (ListView) findViewById(R.id.cartList);
         //Add divider for each listView item
         cartList.setDivider(null);
+        content = (TextView) findViewById(R.id.counterTxt);
+        cost = (TextView) findViewById(R.id.costTxt);
+        vat = (TextView) findViewById(R.id.vatTxt);
 
-        content = (TextView) findViewById(R.id.contentTxt);
-        cost = (TextView) findViewById(R.id.totalTxt);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+
+        emailHeader = (TextView)header.findViewById(R.id.emailTextHeader);
+
+        email = (String) getIntent().getSerializableExtra("email");
+        emailHeader.setText(email);
 
         // Create the adapter
-        final ItemArrayAdapter itemAdapter = new ItemArrayAdapter(this,itemArray);
+        final CartArrayAdapter itemAdapter = new CartArrayAdapter(this,itemArray);
 
         // Attach the adapter to the list view
         cartList.setAdapter(itemAdapter);
 
+        emptyView = findViewById(R.id.empty_view);
+        cartList.setEmptyView(emptyView);
 
         //Check if camera is enabled to allow barcode scanning and prompt the user if it is not enabled
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -95,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //Set logo for app bar
@@ -107,26 +120,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Set buttons for clearing cart and checking out
 
-        clear = (Button) findViewById(R.id.clearBtn);
-        clear.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(itemArray.size() != 0){
-                    itemAdapter.clear();
-                    content.setText("(0 items):");
-                    cost.setText("€0.00");
-                }else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Your cart is empty!!", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-        });
+//        clear = (Button) findViewById(R.id.clearBtn);
+//        clear.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if(itemArray.size() != 0){
+//                    itemAdapter.clear();
+//                    content.setText("(0 items):");
+//                    cost.setText("€0.00");
+//                }else {
+//                    Toast toast = Toast.makeText(getApplicationContext(),
+//                            "Your cart is empty!!", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//            }
+//        });
 
         checkout = (Button) findViewById(R.id.checkoutBtn);
         checkout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(itemArray.size() != 0){
-                    startActivity(new Intent(MainActivity.this, PaymentActivity.class));
+                    Intent checkoutIntent = new Intent(MainActivity.this, PaymentActivity.class);
+                    checkoutIntent.putExtra("mylist", itemArray);
+                    checkoutIntent.putExtra("email", email);
+                    checkoutIntent.putExtra("total", totalCost);
+                    startActivity(checkoutIntent);
                 }else {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Your cart is empty!!", Toast.LENGTH_SHORT);
@@ -156,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            moveTaskToBack(true);
         }
     }
 
@@ -191,18 +208,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_shopping_cart) {
             //startActivity(new Intent(MainActivity.this, MainActivity.class));
             //return true;
-        } else if (id == R.id.nav_shopping_list) {
+        }else if (id == R.id.nav_deals) {
 
-        } else if (id == R.id.nav_shopping_cart) {
-
-        } else if (id == R.id.nav_profile) {
+        } else if (id == R.id.nav_signout) {
 
         } else if (id == R.id.nav_receipts) {
 
-        } else if (id == R.id.nav_loyalty) {
+        } else if (id == R.id.nav_profile) {
+
+        } else if (id == R.id.nav_shopping_list) {
+
+        } else if (id == R.id.nav_customer_service) {
+
+        }else if (id == R.id.nav_about) {
+
+        }else if (id == R.id.nav_locations) {
 
         }
 
@@ -217,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Scanning Function start
      */
-
     //Grab the data once scanning is complete, compare with database and populate the fields
     public void onActivityResult(int requestCode, final int resultCode, Intent intent) {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
@@ -232,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject itemObject = jsonArray.getJSONObject(0);
@@ -241,25 +262,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String category = itemObject.optString("productCategory");
 
                                 Item item = new Item(name,price,category);
+                                emptyView.setVisibility(emptyView.GONE);
+                                cartList.setEmptyView(null);
 
                                 itemArray.add(item);
                                 if(itemArray.size()==1) {
-                                    content.setText("(" + Integer.toString(itemArray.size()) + " item):");
+                                    content.setText(Integer.toString(itemArray.size()) + " item");
                                 }else {
-                                    content.setText("(" + Integer.toString(itemArray.size()) + " items):");
+                                    content.setText(Integer.toString(itemArray.size()) + " items");
                                 }
                                 //Find sum of all prices and display in the subTotal field
-                                double totalCost = 0;
+                                totalCost = 0;
+                                vatValue = 0;
                                 NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-                                for(int i = 0; i < itemArray.size(); i++)
-                                {
+                                for(int i = 0; i < itemArray.size(); i++) {
                                     Float value=Float.parseFloat(itemArray.get(i).getPrice());
                                     totalCost += value;
                                 }
-
-
-
+                                vatValue = totalCost*0.23;
                                 cost.setText(String.valueOf(currencyFormatter.format(totalCost)));
+
+                                vat.setText(String.valueOf(currencyFormatter.format(vatValue)));
 
                                 Toast toast = Toast.makeText(getApplicationContext(),
                                         name+" successfully added to cart!", Toast.LENGTH_SHORT);

@@ -5,48 +5,53 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:scaleType="centerCrop"
-    android:elevation="5dp"
+    android:elevation="3dp"
     android:layout_height="105dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="50dp"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:background="@color/Red"
+        android:elevation="3dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_above="@+id/itemDivider"
+        android:id="@+id/quantityLayout"
+        android:visibility="gone">
+
+        <TextView
+            android:text="2x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold"
+            android:id="@+id/quantityTxt" />
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:background="@color/lightGrey"
-        android:layout_height="0.7dp"
-        android:id="@+id/divider4"
+        android:id="@+id/itemDivider"
         android:layout_alignParentBottom="true"
-       />
-
-    <ImageView
-        android:id="@+id/categoryView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="9dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="1.25dp" />
 
     <TextView
         android:text="TextView"
         android:id="@+id/nameTxt"
         android:textColor="@color/textPrimary"
         android:textSize="22sp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:layout_alignTop="@+id/priceTxt"
         android:layout_toEndOf="@+id/categoryView"
         android:layout_marginStart="9dp"
-        android:layout_width="160dp" />
-
-    <TextView
-        android:text="TextView"
-        android:id="@+id/descriptionTxt"
-        android:layout_height="30dp"
-        android:textColor="@color/textPrimary"
-        android:textSize="15sp"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_above="@+id/divider4"
-        android:layout_alignStart="@+id/nameTxt"
-        android:layout_width="160dp" />
+        android:layout_width="230dp" />
 
     <TextView
         android:text="$50.50"
@@ -57,28 +62,27 @@
         android:textSize="22sp"
         android:gravity="center"
         android:fontFamily="sans-serif-condensed"
-        android:layout_marginEnd="6dp"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/clearFromList" />
+        android:layout_alignParentEnd="true" />
 
-    <Button
-        android:id="@+id/addToList"
-        android:background="@drawable/buttonshape_clear"
-        android:drawableBottom="@drawable/ic_action_addlist"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
+    <TextView
+        android:text="TextView"
+        android:id="@+id/descriptionTxt"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textPrimary"
+        android:textSize="15sp"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_width="160dp"
+        android:layout_alignBottom="@+id/categoryView"
+        android:layout_alignStart="@+id/nameTxt" />
 
-    <Button
-        android:id="@+id/clearFromList"
-        android:background="@drawable/buttonshape_clear"
-        android:drawableTop="@drawable/ic_action_clear"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/nameTxt"
-        android:layout_alignStart="@+id/addToList" />
+    <ImageView
+        android:id="@+id/categoryView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="7dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/quantityLayout"
+        android:tint="@color/colorPrimary"/>
 
 </RelativeLayout>

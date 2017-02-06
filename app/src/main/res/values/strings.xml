@@ -7,4 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="checkout_txt">Checkout</string>
     <string name="simplify_api_key">sbpb_NWVkNzAxMDctYmI4MS00N2Y5LThkYzAtYTU5NjgzZjI3ZTA5</string>
+    <string name="my_receipts">My Receipts</string>
+    <string name="my_profile">My Profile</string>
 </resources>

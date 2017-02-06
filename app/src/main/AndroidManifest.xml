@@ -61,6 +61,20 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
 
+        <activity
+            android:name=".Activity.ReceiptsActivity"
+            android:label="@string/my_receipts"
+            android:parentActivityName=".Activity.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
+            android:name=".Activity.ProfileActivity"
+            android:label="@string/my_profile"
+            android:parentActivityName=".Activity.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
     </application>
 
 </manifest>

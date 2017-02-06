@@ -71,8 +71,8 @@
             android:layout_centerHorizontal="true" />
         <View
             android:layout_width="match_parent"
-            android:background="@color/lightGrey"
-            android:layout_height="0.8dp"
+            android:background="@color/colorPrimary"
+            android:layout_height="1dp"
             android:id="@+id/cardEditorDivider"
             android:layout_alignParentTop="true" />
 

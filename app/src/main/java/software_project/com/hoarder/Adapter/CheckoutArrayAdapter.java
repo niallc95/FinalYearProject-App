@@ -38,6 +38,7 @@ public class CheckoutArrayAdapter extends ArrayAdapter<Item> {
         TextView nameTxt = (TextView) convertView.findViewById(R.id.nameTxt);
         TextView priceTxt = (TextView) convertView.findViewById(R.id.priceTxt);
 
+
         // Populate the corresponding fields for each item
         nameTxt.setText(String.valueOf(item.getName()));
         priceTxt.setText("€"+String.valueOf(item.getPrice()));

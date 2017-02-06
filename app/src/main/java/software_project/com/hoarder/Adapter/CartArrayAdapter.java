@@ -40,14 +40,11 @@ public class CartArrayAdapter extends ArrayAdapter<Item> {
         TextView priceTxt = (TextView) convertView.findViewById(R.id.priceTxt);
         TextView categoryTxt = (TextView) convertView.findViewById(R.id.descriptionTxt);
         ImageView categoryView = (ImageView) convertView.findViewById(R.id.categoryView);
-        Button listAdd = (Button) convertView.findViewById(R.id.addToList);
-        Button clearBtn = (Button) convertView.findViewById(R.id.clearFromList);
 
         // Populate the corresponding fields for each item
         nameTxt.setText(String.valueOf(item.getName()));
         priceTxt.setText("€"+String.valueOf(item.getPrice()));
         categoryTxt.setText(String.valueOf(item.getCat()));
-
 
         if(String.valueOf(item.getCat()).contains("Crisps")) {
             categoryView.setImageResource(R.drawable.ic_icon_crisps);

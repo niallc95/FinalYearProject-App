@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:scaleType="center"
+        android:background="@color/colorPrimaryDark"
+        android:contentDescription="@string/app_name" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/addListBtn"
+            android:text="Add to List"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:background="@drawable/buttonshape"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp"
+            android:layout_width="70dp"
+            android:layout_height="30dp" />
+
+        <Button
+            android:id="@+id/deleteListBtn"
+            android:text="Delete"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:background="@drawable/buttonshape"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp"
+            android:layout_width="70dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/veryLightGrey">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/profileHeaderLayout"
+        android:orientation="horizontal"
+        android:background="@drawable/grocery"
+        android:layout_height="150dp" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/lightGrey"
+        android:layout_height="1.5dp"
+        android:id="@+id/profileHeadDivider"
+        android:layout_below="@+id/profileHeaderLayout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/infoLayout"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="7dp"
+        android:layout_height="175dp" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:layout_marginStart="10dp"
+            android:id="@+id/profileIcon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Name here"
+            android:id="@+id/nameTxt"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_alignBottom="@+id/profileIcon"
+            android:layout_toEndOf="@+id/profileIcon"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:text="EDIT"
+            android:id="@+id/editLink"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="9dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/lightGrey"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:id="@+id/userDataDivider"
+            android:layout_below="@+id/profileIcon" />
+
+        <TextView
+            android:text="Mobile number:"
+            android:id="@+id/mobileLabel"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/creationLabel"
+            android:layout_alignStart="@+id/creationLabel" />
+
+        <TextView
+            android:text="Email:"
+            android:id="@+id/emailLabel"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/mobileLabel"
+            android:layout_alignStart="@+id/mobileLabel" />
+
+        <TextView
+            android:text="Member since:"
+            android:id="@+id/creationLabel"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignStart="@+id/userDataDivider" />
+
+        <TextView
+            android:text="0879119613"
+            android:id="@+id/mobileNumberText"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignBaseline="@+id/mobileLabel"
+            android:layout_alignBottom="@+id/mobileLabel"
+            android:layout_alignStart="@+id/emailTxt" />
+
+        <TextView
+            android:text="testaccount@gmail.com"
+            android:id="@+id/emailTxt"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignBaseline="@+id/emailLabel"
+            android:layout_alignBottom="@+id/emailLabel"
+            android:layout_alignEnd="@+id/userDataDivider"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:text="12/02/2017"
+            android:id="@+id/creationTxt"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_above="@+id/mobileLabel"
+            android:layout_alignStart="@+id/mobileNumberText" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/itemsLayout"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="17dp"
+        android:layout_height="175dp">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"
+            android:id="@+id/view"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            app:srcCompat="@drawable/ic_nav_list"
+            android:id="@+id/listIcon"
+            android:layout_below="@+id/ordersDivider"
+            android:tint="@color/colorPrimary"
+            android:layout_alignStart="@+id/cartIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <ImageView
+            app:srcCompat="@drawable/ic_nav_cart"
+            android:layout_marginStart="8dp"
+            android:id="@+id/cartIcon"
+            android:tint="@color/colorPrimary"
+            android:layout_below="@+id/creditDivider"
+            android:layout_alignParentStart="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <View
+        android:layout_width="match_parent"
+        android:background="@color/lightGrey"
+        android:layout_marginTop="7dp"
+        android:layout_height="1dp"
+        android:id="@+id/creditDivider"
+            android:layout_below="@+id/creditIcon"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"
+            android:id="@+id/ordersDivider"
+            android:layout_marginTop="7dp"
+            android:layout_below="@+id/cartIcon"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Orders Completed:"
+            android:id="@+id/ordersCompleteLabel"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_alignBottom="@+id/ordersDivider"
+            android:layout_alignStart="@+id/creditLabel"
+            android:layout_height="55dp" />
+
+        <TextView
+            android:text="Store Credit:"
+            android:id="@+id/creditLabel"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_alignBottom="@+id/creditDivider"
+            android:layout_toEndOf="@+id/creditIcon" />
+
+        <TextView
+            android:text="Shopping Lists:"
+            android:id="@+id/shoppingListAmntLabel"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/ordersCompleteLabel" />
+
+        <TextView
+            android:text="42"
+            android:id="@+id/shopListCountTxt"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/ordersCompleteTxt" />
+
+        <ImageView
+            app:srcCompat="@drawable/ic_icon_credit"
+            android:id="@+id/creditIcon"
+            android:layout_width="50dp"
+            android:tint="@color/colorPrimary"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/cartIcon" />
+
+        <TextView
+            android:text="€3.00"
+            android:id="@+id/storeCreditAmntTxt"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_height="55dp"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:text="42"
+            android:id="@+id/ordersCompleteTxt"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_below="@+id/creditDivider"
+            android:layout_alignEnd="@+id/storeCreditAmntTxt" />
+    </RelativeLayout>
+</LinearLayout>

@@ -104,7 +104,7 @@ public class SignupActivity extends AppCompatActivity {
         jsonParams.put("name", fname+" "+lname);
         jsonParams.put("password", password);
         jsonParams.put("email", email);
-        jsonParams.put("mobile", mobile);
+        jsonParams.put("phoneNumber", mobile);
 
         JsonObjectRequest postRequest = new JsonObjectRequest( Request.Method.POST, serverUrl,
                 new JSONObject(jsonParams),
@@ -173,8 +173,8 @@ public class SignupActivity extends AppCompatActivity {
             emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 6 || password.length() > 13 ) {
+            passwordText.setError("Password must be between 6 and 13 alphanumeric characters");
             valid = false;
         } else {
             passwordText.setError(null);

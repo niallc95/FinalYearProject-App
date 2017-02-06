@@ -3,6 +3,7 @@ package software_project.com.hoarder.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -34,11 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordText;
     EditText emailText;
     String serverUrl = "http://hoarder-app.herokuapp.com/login";
+    public static final String SESSION_NAME = "session";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        clear();
 
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
@@ -105,8 +110,10 @@ public class LoginActivity extends AppCompatActivity {
                                 "You are successfully logged in!!", Toast.LENGTH_SHORT);
                         toast.show();
                         progressDialog.dismiss();
+                        SharedPreferences.Editor sessionEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
+                        sessionEditor.putString("email", email);
+                        sessionEditor.commit();
                         Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        loginIntent.putExtra("email", email);
                         startActivity(loginIntent);
                         finish();
                     }
@@ -163,5 +170,11 @@ public class LoginActivity extends AppCompatActivity {
             passwordText.setError(null);
         }
         return valid;
+    }
+
+    public void clear(){
+        SharedPreferences.Editor editor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
+        editor.clear();
+        editor.commit();
     }
 }

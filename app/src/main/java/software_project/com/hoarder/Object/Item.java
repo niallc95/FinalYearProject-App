@@ -12,7 +12,7 @@ public class Item implements Serializable{
     private String productName;
     private String productPrice;
     private String productCategory;
-    //private int productQuantity;
+    private int productQuantity = 1;
 
 
     public Item(String productName, String productPrice, String productCategory){
@@ -20,7 +20,7 @@ public class Item implements Serializable{
         this.productName = productName;
         this.productPrice = productPrice;
         this.productCategory = productCategory;
-        //this.productQuantity = productQuantity;
+        this.productQuantity = productQuantity;
     }
 
 

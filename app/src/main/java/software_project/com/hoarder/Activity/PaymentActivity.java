@@ -1,10 +1,12 @@
 package software_project.com.hoarder.Activity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -48,13 +50,15 @@ import software_project.com.hoarder.R;
  */
 public class PaymentActivity extends AppCompatActivity{
     String serverUrl = "http://hoarder-app.herokuapp.com/payment";
-    double credit,total;
-    String email,totalCost;
-    TextView totalCostAmnt,totalCreditAmnt;
+    double credit,total,discount,accountCredit, remainingCredit;
+    String email,totalCost,cartContent;
+    TextView totalCostAmnt,totalCreditAmnt,discountText;
     ArrayList<Item> itemArray;
     JSONArray jsArray;
     CardEditor cardEditor;
     Button checkoutButton;
+    NumberFormat currencyFormatter;
+    FloatingActionButton loyaltyPromptBtn;
     public static final String SESSION_NAME = "session";
     SharedPreferences session;
 
@@ -63,6 +67,7 @@ public class PaymentActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         checkoutButton = (Button) findViewById(R.id.payBtn);
+        loyaltyPromptBtn = (FloatingActionButton) findViewById(R.id.loyaltyPromptBtn);
         //Get listView item
         ListView checkoutList = (ListView) findViewById(R.id.checkoutList);
 
@@ -73,15 +78,21 @@ public class PaymentActivity extends AppCompatActivity{
         itemArray = gson.fromJson(json, type);
 
         email = session.getString("email", null);
+        cartContent = session.getString("itemCount",null);
         total = Double.parseDouble(session.getString("total", null));
+        accountCredit = Double.parseDouble(session.getString("userAccountCredit", null));
+        remainingCredit = Double.parseDouble(session.getString("userAccountCredit", null));
         credit = total * 0.01;
         totalCost = String.valueOf(total*100);
 
-        totalCostAmnt = (TextView)findViewById(R.id.costTxtCheckout);
-        totalCreditAmnt = (TextView)findViewById(R.id.loyaltyCreditTxt);
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        totalCostAmnt = (TextView)findViewById(R.id.totalTxt);
+        totalCreditAmnt = (TextView)findViewById(R.id.loyaltyTxt);
+        discountText = (TextView) findViewById(R.id.discountTxt);
+
+        currencyFormatter = NumberFormat.getCurrencyInstance();
         totalCostAmnt.setText(String.valueOf(currencyFormatter.format(total)));
         totalCreditAmnt.setText(String.valueOf(currencyFormatter.format(credit)));
+        discountText.setText(String.valueOf(currencyFormatter.format(0.00)));
 
         cardEditor = (CardEditor) findViewById(R.id.card_editor);
         // add state change listener
@@ -101,6 +112,7 @@ public class PaymentActivity extends AppCompatActivity{
                 JSONObject object=new JSONObject();
                 object.put("productName",itemArray.get(i).getName());
                 object.put("productPrice",itemArray.get(i).getPrice());
+                object.put("productQuantity",itemArray.get(i).getQuantity());
                 jsArray.put(object);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -121,7 +133,62 @@ public class PaymentActivity extends AppCompatActivity{
 
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+
                 makePayment();
+            }
+        });
+
+        // add loyalty button click listener
+        loyaltyPromptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+                if(accountCredit > 0){
+                    final Dialog dialog = new Dialog(PaymentActivity.this);
+                    dialog.setContentView(R.layout.discount_dialog);
+
+                    Button yesBtn = (Button) dialog.findViewById(R.id.yesBtn);
+                    Button noBtn = (Button) dialog.findViewById(R.id.noBtn);
+
+                    noBtn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    yesBtn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            if(accountCredit > total) {
+                                discount = total;
+                                discountText.setText("-"+String.valueOf(currencyFormatter.format(discount)));
+                                remainingCredit = accountCredit - discount;
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "You have " + String.valueOf(currencyFormatter.format(remainingCredit)) + " remaining", Toast.LENGTH_LONG);
+                                toast.show();
+                                getDiscountedCost();
+                                dialog.dismiss();
+                            }else{
+                                discount = accountCredit;
+                                remainingCredit = accountCredit - discount;
+                                discountText.setText("-"+String.valueOf(currencyFormatter.format(discount)));
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "You have " + String.valueOf(currencyFormatter.format(remainingCredit)) + " remaining", Toast.LENGTH_LONG);
+                                toast.show();
+                                getDiscountedCost();
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    dialog.show();
+                }else{
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "There is no credit associated with this account!", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
     }
@@ -137,12 +204,13 @@ public class PaymentActivity extends AppCompatActivity{
 
         //Setup payment http request
         final RequestQueue requestQueue = Volley.newRequestQueue(PaymentActivity.this);
-        Map<String, String> jsonParams = new HashMap<String, String>();
+        final Map<String, String> jsonParams = new HashMap<String, String>();
         if (cardEditor.getCard().getNumber() == null || cardEditor.getCard().getCvc() == null || cardEditor.getCard().getExpMonth() == null || cardEditor.getCard().getExpYear() == null) {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Please make sure no field is empty!", Toast.LENGTH_SHORT);
             toast.show();
             progressDialog.dismiss();
+            checkoutButton.setEnabled(true);
         } else {
             final String number = cardEditor.getCard().getNumber().toString().trim();
             final String cvc = cardEditor.getCard().getCvc().toString().trim();
@@ -169,8 +237,9 @@ public class PaymentActivity extends AppCompatActivity{
 
                             Random generateId = new Random();
                             int refNumber = generateId.nextInt(900000 - 100000) + 100000;
-                            updateCredit.put("credit", credit);
-                            createReceipt.put("itemCount", String.valueOf(itemArray.size()));
+                            updateCredit.put("credit", credit+remainingCredit);
+                            createReceipt.put("itemCount", cartContent);
+                            createReceipt.put("discount", discount);
                             createReceipt.put("totalCost", String.valueOf(total));
                             createReceipt.put("referenceNumber", String.valueOf(refNumber));
                             createReceipt.put("items", jsArray);
@@ -256,7 +325,7 @@ public class PaymentActivity extends AppCompatActivity{
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Toast toast = Toast.makeText(getApplicationContext(),
-                                    "There was an error with your payment. Please try again!", Toast.LENGTH_SHORT);
+                                    error.networkResponse.toString(), Toast.LENGTH_SHORT);
                             toast.show();
                             error.printStackTrace();
                             progressDialog.dismiss();
@@ -297,6 +366,12 @@ public class PaymentActivity extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+
+    public void getDiscountedCost(){
+        double cost = total - discount;
+        totalCostAmnt.setText(String.valueOf(currencyFormatter.format(cost)));
     }
 
 }

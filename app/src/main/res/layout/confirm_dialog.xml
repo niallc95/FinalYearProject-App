@@ -10,35 +10,42 @@
         android:contentDescription="@string/app_name"
         android:layout_height="80dp" />
 
+    <TextView
+        android:layout_width="269dp"
+        android:text="Are you sure you wish to delete this item from your list?"
+        android:layout_alignTop="@+id/noBtn"
+        android:layout_height="70dp"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="sans-serif-condensed"
+        android:id="@+id/confirmationTxt"
+        android:textSize="14sp"/>
+
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/AddToListBtn"
-            android:text="Add to List"
+            android:id="@+id/noBtn"
+            android:text="Cancel"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:background="@drawable/buttonshape"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="6dp"
+            android:layout_alignParentLeft="true"
             android:layout_width="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="4dp"
             android:layout_height="50dp" />
 
         <Button
-            android:id="@+id/deleteListBtn"
+            android:id="@+id/deleteBtn"
             android:text="Delete"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:background="@drawable/buttonshape"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="4dp"
             android:layout_width="100dp"
             android:layout_height="50dp" />
 

@@ -18,10 +18,10 @@ import software_project.com.hoarder.R;
  * Created by Niall on 22/11/2016.
  */
 
-public class CheckoutArrayAdapter extends ArrayAdapter<Item> {
+public class ReceiptItemAdapter extends ArrayAdapter<Item> {
 
 
-    public CheckoutArrayAdapter(Context context, ArrayList<Item> items) {
+    public ReceiptItemAdapter(Context context, ArrayList<Item> items) {
         super(context, 0, items);
     }
 
@@ -33,7 +33,7 @@ public class CheckoutArrayAdapter extends ArrayAdapter<Item> {
 
         // Inflate the view only if an existing view is not being reused
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.checkout_row, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row, parent, false);
         }
 
         // Find views

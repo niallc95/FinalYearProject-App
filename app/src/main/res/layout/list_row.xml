@@ -20,7 +20,7 @@
         android:fontFamily="sans-serif-condensed"/>
 
     <TextView
-        android:text="X1"
+        android:text="X100"
         android:id="@+id/quantityCountTxt"
         android:textColor="@color/Red"
         android:textSize="15sp"
@@ -29,23 +29,20 @@
         android:fontFamily="sans-serif-condensed"
         android:layout_marginLeft="9dp"
         android:layout_marginRight="9dp"
-        android:layout_alignBaseline="@+id/nameTxt"
-        android:layout_alignBottom="@+id/nameTxt"
-        android:layout_toEndOf="@+id/nameTxt" />
+        android:layout_alignBaseline="@+id/priceTxt" />
 
     <TextView
         android:text="TextView"
         android:id="@+id/nameTxt"
         android:textColor="@color/black"
         android:textSize="15sp"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
+        android:layout_toEndOf="@+id/quantityCountTxt"
         android:layout_marginLeft="9dp"
         android:layout_marginRight="9dp"
         android:layout_alignBaseline="@+id/priceTxt"
         android:layout_alignBottom="@+id/priceTxt"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="12dp" />
+        android:layout_width="300dp" />
 
 </RelativeLayout>

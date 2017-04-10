@@ -9,7 +9,7 @@
         android:id="@+id/profileHeaderLayout"
         android:orientation="horizontal"
         android:background="@drawable/grocery"
-        android:layout_height="150dp" />
+        android:layout_height="140dp" />
     <View
         android:layout_width="match_parent"
         android:background="@color/lightGrey"

@@ -1,5 +1,6 @@
 package software_project.com.hoarder.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,58 +9,113 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import software_project.com.hoarder.Activity.MainActivity;
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
-/**
- * Created by Niall on 22/11/2016.
- */
-
 public class CartArrayAdapter extends ArrayAdapter<Item> {
+    Context context;
+    int layoutId;
+    ArrayList<Item> itemArray = new ArrayList<Item>();
 
-
-    public CartArrayAdapter(Context context, ArrayList<Item> items) {
-        super(context, 0, items);
+    public CartArrayAdapter(Context context, int layoutId,ArrayList<Item> itemArray) {
+        super(context, layoutId, itemArray);
+        this.layoutId = layoutId;
+        this.context = context;
+        this.itemArray = itemArray;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the item data for this position
-        Item item = getItem(position);
+        final ItemHolder holder;
+        View row = convertView;
+        final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
 
-        // Inflate the view only if an existing view is not being reused
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_row, parent, false);
+        if (row == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            row = inflater.inflate(layoutId, parent, false);
+            holder = new ItemHolder();
+            holder.nameTxt = (TextView) row.findViewById(R.id.nameTxt);
+            holder.priceTxt = (TextView) row.findViewById(R.id.priceTxt);
+            holder.descTxt = (TextView) row.findViewById(R.id.descriptionTxt);
+            holder.quantityTxt = (TextView) row.findViewById(R.id.quantityTxt);
+            holder.categoryView = (ImageView) row.findViewById(R.id.categoryView);
+            holder.addBtn = (ImageView) row.findViewById(R.id.plus_btn);
+            holder.negBtn = (ImageView) row.findViewById(R.id.minus_btn);
+            row.setTag(holder);
+        } else {
+            holder = (ItemHolder) row.getTag();
         }
-
-        // Find views
-        TextView nameTxt = (TextView) convertView.findViewById(R.id.nameTxt);
-        TextView priceTxt = (TextView) convertView.findViewById(R.id.priceTxt);
-        TextView categoryTxt = (TextView) convertView.findViewById(R.id.descriptionTxt);
-        ImageView categoryView = (ImageView) convertView.findViewById(R.id.categoryView);
-
-        // Populate the corresponding fields for each item
-        nameTxt.setText(String.valueOf(item.getName()));
-        priceTxt.setText("€"+String.valueOf(item.getPrice()));
-        categoryTxt.setText(String.valueOf(item.getCat()));
+        final Item item = itemArray.get(position);
+        holder.quantityTxt.setText(String.valueOf(item.getQuantity()));
+        holder.priceTxt.setText(String.valueOf(currencyFormatter.format(item.getPrice()*item.getQuantity())));
+        holder.nameTxt.setText(item.getName());
+        holder.descTxt.setText(item.getCat());
 
         if(String.valueOf(item.getCat()).contains("Crisps")) {
-            categoryView.setImageResource(R.drawable.ic_icon_crisps);
+            holder.categoryView.setImageResource(R.drawable.ic_icon_crisps);
         }else if(String.valueOf(item.getCat()).contains("Energy Drink")) {
-            categoryView.setImageResource(R.drawable.ic_icon_energy);
+            holder.categoryView.setImageResource(R.drawable.ic_icon_energy);
         }else if(String.valueOf(item.getCat()).contains("Soda")) {
-            categoryView.setImageResource(R.drawable.ic_icon_soda);
+            holder.categoryView.setImageResource(R.drawable.ic_icon_soda);
         }else if(String.valueOf(item.getCat()).contains("Beverage")) {
-            categoryView.setImageResource(R.drawable.ic_icon_beverage);
+            holder.categoryView.setImageResource(R.drawable.ic_icon_beverage);
         }else if(String.valueOf(item.getCat()).contains("Chocolate")) {
-            categoryView.setImageResource(R.drawable.ic_icon_choc);
+            holder.categoryView.setImageResource(R.drawable.ic_icon_choc);
         }else {
-            categoryView.setImageResource(R.drawable.ic_no_image);
+            holder.categoryView.setImageResource(R.drawable.ic_no_image);
         }
 
-        return convertView;
+        holder.addBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                item.setQuantity(item.getQuantity()+1);
+                holder.quantityTxt.setText(String.valueOf(item.getQuantity()));
+                holder.priceTxt.setText(String.valueOf(currencyFormatter.format(item.getPrice()*item.getQuantity())));
+                if(context instanceof MainActivity){
+                    ((MainActivity)context).getValues();
+                }
+            }
+        });
+
+        holder.negBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(item.getQuantity()>0) {
+                    item.setQuantity(item.getQuantity() - 1);
+                    holder.quantityTxt.setText(String.valueOf(item.getQuantity()));
+                    holder.priceTxt.setText(String.valueOf(currencyFormatter.format(item.getPrice()*item.getQuantity())));
+                    if(context instanceof MainActivity){
+                        ((MainActivity)context).getValues();
+                    }
+                }else{
+                    item.setQuantity(0);
+                    holder.quantityTxt.setText(String.valueOf(item.getQuantity()));
+                    holder.priceTxt.setText(String.valueOf(currencyFormatter.format(item.getPrice()*item.getQuantity())));
+                    if(context instanceof MainActivity){
+                        ((MainActivity)context).getValues();
+                    }
+                }
+            }
+        });
+        return row;
+
+    }
+
+    static class ItemHolder {
+        TextView nameTxt;
+        TextView descTxt;
+        TextView quantityTxt;
+        TextView priceTxt;
+        ImageView categoryView;
+        ImageView addBtn;
+        ImageView negBtn;
     }
 }

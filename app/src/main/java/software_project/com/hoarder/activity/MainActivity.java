@@ -1,7 +1,7 @@
 package software_project.com.hoarder.Activity;
 
 import android.Manifest;
-import android.app.Dialog;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,19 +17,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -41,8 +42,12 @@ import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import software_project.com.hoarder.Adapter.CartArrayAdapter;
 import software_project.com.hoarder.Object.Item;
+import software_project.com.hoarder.Object.List;
 import software_project.com.hoarder.Object.Receipt;
 import software_project.com.hoarder.R;
 
@@ -58,13 +63,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Button checkout;
     String findItemUrl = "http://hoarder-app.herokuapp.com/findItem/";
     String receiptUrl = "https://hoarder-app.herokuapp.com/findReceipt/";
+    String findListUrl = "https://hoarder-app.herokuapp.com/findList/";
+    String addListUrl = "https://hoarder-app.herokuapp.com/list/";
     String accountUrl = "https://hoarder-app.herokuapp.com/user/";
     ArrayList<Item> itemArray;
     ArrayList<Receipt> receiptArray;
+    ArrayList<List> listItemArray;
     View emptyView;
-    String email,orderCount,credit,creationDate,phoneNumber,name;
-    double totalCost,vatValue;
-    Intent receiptsIntent,profileIntent;
+    Item getItem;
+    String email,orderCount,credit,creationDate,phoneNumber,name,productName;
+    double totalCost,vatValue,productPrice;
+    int cartCount;
+    Intent receiptsIntent,profileIntent,listIntent;
     public static final String SESSION_NAME = "session";
     CartArrayAdapter itemAdapter;
 
@@ -74,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         itemArray = new ArrayList<>();
         receiptArray = new ArrayList<>();
+        listItemArray = new ArrayList<>();
         //Get listView item
         cartList = (ListView) findViewById(R.id.cartList);
         //Add divider for each listView item
@@ -82,8 +93,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cost = (TextView) findViewById(R.id.costTxt);
         vat = (TextView) findViewById(R.id.vatTxt);
 
-        receiptsIntent = new Intent(MainActivity.this, ReceiptsActivity.class);
+        receiptsIntent = new Intent(MainActivity.this, ReceiptsListActivity.class);
         profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        listIntent = new Intent(MainActivity.this, software_project.com.hoarder.Activity.ListActivity.class);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -95,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         emailHeader.setText(email);
 
         // Create the adapter
-        itemAdapter = new CartArrayAdapter(this,itemArray);
+        itemAdapter = new CartArrayAdapter(this,R.layout.item_row,itemArray);
 
         // Attach the adapter to the list view
         cartList.setAdapter(itemAdapter);
@@ -135,45 +147,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         appBar.setCustomView(R.layout.app_bar_top);
         appBar.setDisplayShowCustomEnabled(true);
 
-        //Set buttons for clearing cart and checking out
-
-//        clear = (Button) findViewById(R.id.clearBtn);
-//        clear.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                if(itemArray.size() != 0){
-//                    itemAdapter.clear();
-//                    content.setText("(0 items):");
-//                    cost.setText("€0.00");
-//                }else {
-//                    Toast toast = Toast.makeText(getApplicationContext(),
-//                            "Your cart is empty!!", Toast.LENGTH_SHORT);
-//                    toast.show();
-//                }
-//            }
-//        });
-
         checkout = (Button) findViewById(R.id.checkoutBtn);
         checkout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(itemArray.size() != 0){
-                    Intent checkoutIntent = new Intent(MainActivity.this, PaymentActivity.class);
-                    SharedPreferences.Editor checkoutEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
-                    Gson gson = new Gson();
-                    String json = gson.toJson(itemArray);
-                    checkoutEditor.putString("items", json);
-                    checkoutEditor.putString("email",email);
-                    checkoutEditor.putString("total",String.valueOf(totalCost));
-                    checkoutEditor.commit();
-                    startActivity(checkoutIntent);
-                }else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Your cart is empty!!", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
+                getPaymentInformation();
             }
         });
     }
-
     /**
      * Check your device is connected to a network
      */
@@ -208,8 +188,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_shopping_cart) {
-            //startActivity(new Intent(MainActivity.this, MainActivity.class));
-            //return true;
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "You are already here!", Toast.LENGTH_SHORT);
+            toast.show();
         }else if (id == R.id.nav_deals) {
 
         } else if (id == R.id.nav_signout) {
@@ -221,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_profile) {
             getUserInformation();
         } else if (id == R.id.nav_shopping_list) {
-
+            getLists();
         } else if (id == R.id.nav_customer_service) {
 
         }else if (id == R.id.nav_about) {
@@ -259,21 +240,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject itemObject = jsonArray.getJSONObject(0);
                                 String name = itemObject.optString("productName");
-                                String price = itemObject.optString("productPrice");
+                                double price = Double.parseDouble(itemObject.optString("productPrice"));
                                 String category = itemObject.optString("productCategory");
 
-                                Item item = new Item(name,price,category);
+                                Item item = new Item(name, price, category, 1);
                                 emptyView.setVisibility(emptyView.GONE);
                                 cartList.setEmptyView(null);
-
-                                itemArray.add(item);
-
-                                getValues();
-
-                                Toast toast = Toast.makeText(getApplicationContext(),
-                                        name+" successfully added to cart!", Toast.LENGTH_SHORT);
-                                toast.show();
-
+                                if(itemArray.size()>0) {
+                                    boolean isNew = true;
+                                    for (Item items : itemArray){
+                                        if (items.getName().equals(name)) {
+                                            int quantity = items.getQuantity();
+                                            items.setQuantity(quantity + 1);
+                                            isNew = false;
+                                            getValues();
+                                            Toast toast = Toast.makeText(getApplicationContext(),
+                                                    name + " has been added to cart!!", Toast.LENGTH_SHORT);
+                                            toast.show();
+                                            break;
+                                        }
+                                    }
+                                    if(isNew){
+                                        itemArray.add(item);
+                                        getValues();
+                                        Toast toast = Toast.makeText(getApplicationContext(),
+                                                name + " has been added to cart!!", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                }else{
+                                    itemArray.add(item);
+                                    getValues();
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            name + "Added to cart!!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                                itemAdapter.notifyDataSetChanged();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -331,14 +332,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             receiptArray.clear();
+                            itemAdapter.notifyDataSetChanged();
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject itemObject = jsonArray.getJSONObject(i);
-                                String date = itemObject.optString("date");
-                                String time = itemObject.optString("time");
-                                String referenceNumber = itemObject.optString("referenceNumber");
-                                String totalCost = itemObject.optString("totalCost");
-                                String itemCount = itemObject.optString("itemCount");
-                                Receipt receipt = new Receipt(date,time,itemCount,totalCost,referenceNumber);
+                                ArrayList<Item> itemList = new ArrayList<>();
+                                JSONObject receiptObject = jsonArray.getJSONObject(i);
+                                String date = receiptObject.optString("date");
+                                String time = receiptObject.optString("time");
+                                String referenceNumber = receiptObject.optString("referenceNumber");
+                                String totalCost = receiptObject.optString("totalCost");
+                                String itemCount = receiptObject.optString("itemCount");
+                                String discount = receiptObject.optString("discount");
+                                JSONArray receiptItems = receiptObject.optJSONArray("items");
+                                for(int j = 0; j < receiptItems.length(); j++) {
+                                    JSONObject itemObject = receiptItems.getJSONObject(j);
+                                    String name = itemObject.optString("productName");
+                                    double price = Double.parseDouble(itemObject.optString("productPrice"));
+                                    int quantity = Integer.valueOf(itemObject.optString("productQuantity"));
+                                    Item item = new Item(name, price, "", quantity);
+                                    itemList.add(item);
+                                }
+                                Receipt receipt = new Receipt(date,time,itemCount,totalCost,referenceNumber,discount,itemList);
                                 receiptArray.add(receipt);
                             }
                         } catch (JSONException e) {
@@ -370,12 +383,109 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          */
     }
 
+    public void addToList(){
+        JSONObject listRequest=new JSONObject();
+        try{
+            listRequest.put("productName",productName);
+            listRequest.put("productPrice",productPrice);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final Map<String, Object> addToList = new HashMap<>();
+        addToList.put("items", listRequest);
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        JsonObjectRequest requestList = new JsonObjectRequest(Request.Method.POST, addListUrl+email , new JSONObject(addToList),
+                //Success response from add to list
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Your shopping list has been updated", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                },
+                //Error response from add to list
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "There was an error adding this item to your shopping list!!", Toast.LENGTH_SHORT);
+                        toast.show();
+                        error.printStackTrace();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+        requestQueue.add(requestList);
+        /**
+         * generate receipt for transaction end
+         */
+    }
+
+    public void getLists(){
+        listItemArray.clear();
+        itemAdapter.notifyDataSetChanged();
+        /**
+         * Retrieve shopping list from server
+         */
+        final RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest getListRequest = new StringRequest(Request.Method.GET, findListUrl+email,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray responseObject = new JSONArray(response);
+                            JSONObject itemObject = responseObject.getJSONObject(0);
+                            String items = itemObject.optString("items");
+                            JSONArray responseArray = new JSONArray(items);
+                            for (int i = 0; i < responseArray.length(); i++) {
+                                JSONObject item = responseArray.getJSONObject(i);
+                                String productName = item.optString("productName");
+                                String productPrice = item.optString("productPrice");
+                                List list = new List(productName,productPrice);
+                                listItemArray.add(list);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        SharedPreferences.Editor sessionEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(listItemArray);
+
+                        sessionEditor.putString("list", json);
+                        sessionEditor.commit();
+                        startActivity(listIntent);
+                        requestQueue.stop();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Your shopping list is empty!!", Toast.LENGTH_SHORT);
+                toast.show();
+                error.printStackTrace();
+                startActivity(listIntent);
+                requestQueue.stop();
+            }
+        });
+        requestQueue.add(getListRequest);
+        /**
+         * Retrieve shopping list from server end
+         */
+    }
+
     public void getUserInformation(){
         /**
          * Retrieve user information from server
          */
         final RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest receiptRequest = new StringRequest(Request.Method.GET, accountUrl+email,
+        StringRequest profileRequest = new StringRequest(Request.Method.GET, accountUrl+email,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -412,24 +522,87 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 requestQueue.stop();
             }
         });
-        requestQueue.add(receiptRequest);
+        requestQueue.add(profileRequest);
+        /**
+         * Retrieve receipts from server end
+         */
+    }
+
+    public void getPaymentInformation(){
+        /**
+         * Retrieve user information from server
+         */
+        final RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest userRequest = new StringRequest(Request.Method.GET, accountUrl+email,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject profile = new JSONObject(response);
+                            credit = String.valueOf(profile.optDouble("credit"));
+                            name = profile.optString("name");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(itemArray.size() != 0){
+                            Intent checkoutIntent = new Intent(MainActivity.this, PaymentActivity.class);
+                            SharedPreferences.Editor checkoutEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
+                            Gson gson = new Gson();
+                            String json = gson.toJson(itemArray);
+                            checkoutEditor.putString("items", json);
+                            checkoutEditor.putString("email",email);
+                            checkoutEditor.putString("itemCount",String.valueOf(cartCount));
+                            checkoutEditor.putString("total",String.valueOf(totalCost));
+                            checkoutEditor.putString("userAccountCredit", credit);
+                            checkoutEditor.commit();
+                            startActivity(checkoutIntent);
+                        }else {
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Your cart is empty!!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        requestQueue.stop();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Error loading profile", Toast.LENGTH_SHORT);
+                toast.show();
+                error.printStackTrace();
+                requestQueue.stop();
+            }
+        });
+        requestQueue.add(userRequest);
         /**
          * Retrieve receipts from server end
          */
     }
 
     public void getValues(){
-        if(itemArray.size()==1) {
-            content.setText(Integer.toString(itemArray.size()) + " item");
+        cartCount = 0;
+        for(int i = 0; i < itemArray.size(); i++) {
+            int count = itemArray.get(i).getQuantity();
+            if(itemArray.get(i).getQuantity()==0){
+                itemArray.remove(i);
+                itemAdapter.notifyDataSetChanged();
+                if(itemArray.size()==0){
+                    cartList.setEmptyView(emptyView);
+                }
+            }
+            cartCount += count;
+        }
+        if(cartCount==1) {
+            content.setText(Integer.toString(cartCount) + " item");
         }else {
-            content.setText(Integer.toString(itemArray.size()) + " items");
+            content.setText(Integer.toString(cartCount) + " items");
         }
         //Find sum of all prices and display in the subTotal field
         totalCost = 0;
         vatValue = 0;
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         for(int i = 0; i < itemArray.size(); i++) {
-            Float value=Float.parseFloat(itemArray.get(i).getPrice());
+            double value= itemArray.get(i).getPrice()* itemArray.get(i).getQuantity();
             totalCost += value;
         }
         vatValue = totalCost*0.23;
@@ -441,20 +614,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     class itemClick implements AdapterView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
-            ViewGroup vg=(ViewGroup)view;
-            TextView itemName =(TextView)vg.findViewById(R.id.nameTxt);
-            String name = itemName.getText().toString();
             final Dialog dialog = new Dialog(MainActivity.this);
             dialog.setContentView(R.layout.item_dialog);
-            dialog.setTitle("Hoarder");
 
-            Button addBtn = (Button) dialog.findViewById(R.id.addListBtn);
+            Button addBtn = (Button) dialog.findViewById(R.id.AddToListBtn);
             Button deleteBtn = (Button) dialog.findViewById(R.id.deleteListBtn);
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Object toAdd = itemArray.get(position);
-                    Toast.makeText(MainActivity.this, toAdd.toString(),Toast.LENGTH_SHORT).show();
+                    getItem = itemArray.get(position);
+                    productName = getItem.getName();
+                    productPrice = getItem.getPrice();
+                    addToList();
                     dialog.dismiss();
                 }
             });

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import software_project.com.hoarder.Object.Item;
@@ -21,6 +22,7 @@ import software_project.com.hoarder.R;
 
 public class ReceiptArrayAdapter extends ArrayAdapter<Receipt> {
 
+    final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
 
     public ReceiptArrayAdapter(Context context, ArrayList<Receipt> receipts) {
         super(context, 0, receipts);
@@ -48,7 +50,7 @@ public class ReceiptArrayAdapter extends ArrayAdapter<Receipt> {
         timeTxt.setText(String.valueOf(receipt.getTime()));
         dateTxt.setText(String.valueOf(receipt.getDate()));
         referenceNoTxt.setText(String.valueOf(receipt.getReferenceNumber()));
-        totalCostTxt.setText(String.valueOf(receipt.getTotalCost()));
+        totalCostTxt.setText(currencyFormatter.format(Double.parseDouble(receipt.getTotalCost())));
         itemCountTxt.setText(String.valueOf(receipt.getItemCount()));
 
         return convertView;

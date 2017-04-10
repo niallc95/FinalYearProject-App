@@ -10,13 +10,12 @@ import java.io.Serializable;
 public class Item implements Serializable{
 
     private String productName;
-    private String productPrice;
     private String productCategory;
-    private int productQuantity = 1;
+    private double productPrice;
+    private int productQuantity;
 
 
-    public Item(String productName, String productPrice, String productCategory){
-
+    public Item(String productName, double productPrice, String productCategory,int productQuantity){
         this.productName = productName;
         this.productPrice = productPrice;
         this.productCategory = productCategory;
@@ -27,11 +26,15 @@ public class Item implements Serializable{
     public String getName() {
         return productName;
     }
-    public String getPrice() {
+    public double getPrice() {
         return productPrice;
     }
     public String getCat() {
         return productCategory;
     }
-    //public int getQuantity() { return productQuantity;}
+    public int getQuantity() { return productQuantity;}
+
+    public void setQuantity(int quantity){
+        this.productQuantity = quantity;
+    }
 }

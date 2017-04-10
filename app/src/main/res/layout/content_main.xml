@@ -110,7 +110,7 @@
     <ListView
         android:layout_width="match_parent"
         android:id="@+id/cartList"
-        android:background="@color/lightGrey"
+        android:background="@color/bg"
         android:layout_height="match_parent"
         android:layout_above="@+id/footerLayout"/>
 
@@ -127,11 +127,4 @@
         android:fontFamily="sans-serif-condensed"
         android:layout_height="300dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/footerLayout"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="166dp"
-        android:id="@+id/textView" />
 </RelativeLayout>

@@ -5,53 +5,84 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:scaleType="centerCrop"
-    android:elevation="3dp"
-    android:layout_height="105dp">
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="50dp"
-        android:orientation="vertical"
-        android:layout_alignParentLeft="true"
-        android:background="@color/Red"
-        android:elevation="3dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_above="@+id/itemDivider"
-        android:id="@+id/quantityLayout"
-        android:visibility="gone">
-
-        <TextView
-            android:text="2x"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="30sp"
-            android:textColor="@color/white"
-            android:fontFamily="sans-serif-thin"
-            android:textStyle="bold"
-            android:id="@+id/quantityTxt" />
-
-    </RelativeLayout>
+    android:layout_height="100dp">
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/lightGrey"
-        android:id="@+id/itemDivider"
+        android:background="@color/bg"
+        android:layout_height="2dp"
+        android:id="@+id/divider4"
         android:layout_alignParentBottom="true"
-        android:layout_height="1.25dp" />
+        />
+
+    <ImageView
+        android:id="@+id/categoryView"
+        android:layout_width="70dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_height="65dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        app:srcCompat="@drawable/ic_no_image" />
+
+    <TextView
+        android:id="@+id/descriptionTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="0.09"
+        android:paddingRight="5dip"
+        android:text="Product Description"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/nameTxt" />
 
     <TextView
         android:text="TextView"
         android:id="@+id/nameTxt"
         android:textColor="@color/textPrimary"
-        android:textSize="22sp"
+        android:textSize="14sp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_alignTop="@+id/priceTxt"
-        android:layout_toEndOf="@+id/categoryView"
-        android:layout_marginStart="9dp"
-        android:layout_width="230dp" />
+        android:layout_above="@+id/descriptionTxt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="11dp"
+        android:layout_width="200dp" />
+
+    <LinearLayout
+        android:id="@+id/quantityLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/categoryView"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/priceTxt">
+
+        <ImageView
+            android:id="@+id/minus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_icon_minus" />
+
+        <TextView
+            android:id="@+id/quantityTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:text="1"
+            android:textSize="12dip"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/plus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_icon_add" />
+
+    </LinearLayout>
 
     <TextView
         android:text="$50.50"
@@ -61,28 +92,7 @@
         android:textColor="@color/textPrimary"
         android:textSize="22sp"
         android:gravity="center"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="TextView"
-        android:id="@+id/descriptionTxt"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textPrimary"
-        android:textSize="15sp"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_width="160dp"
-        android:layout_alignBottom="@+id/categoryView"
-        android:layout_alignStart="@+id/nameTxt" />
-
-    <ImageView
-        android:id="@+id/categoryView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="7dp"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/quantityLayout"
-        android:tint="@color/colorPrimary"/>
-
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/quantityLayout" />
 </RelativeLayout>

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +20,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -36,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordText;
     EditText emailText;
     String serverUrl = "http://hoarder-app.herokuapp.com/login";
+    String accountUrl = "https://hoarder-app.herokuapp.com/user/";
+    String email,name,accountCredit;
+    ProgressDialog progressDialog;
     public static final String SESSION_NAME = "session";
 
     @Override
@@ -86,14 +92,14 @@ public class LoginActivity extends AppCompatActivity {
         }
         loginBtn.setEnabled(false);
 
-        final ProgressDialog progressDialog = ProgressDialog.show(this, null, null, true, false);
+        progressDialog = ProgressDialog.show(this, null, null, true, false);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.setContentView(R.layout.progress_layout);
         progressDialog.show();
 
         final RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-        final String email = emailText.getText().toString();
+        email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
         Map<String, String> jsonParams = new HashMap<>();
@@ -106,16 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "You are successfully logged in!!", Toast.LENGTH_SHORT);
-                        toast.show();
-                        progressDialog.dismiss();
-                        SharedPreferences.Editor sessionEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
-                        sessionEditor.putString("email", email);
-                        sessionEditor.commit();
-                        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(loginIntent);
-                        finish();
+                        getUserInformation();
                     }
                 },
                 new Response.ErrorListener() {
@@ -176,5 +173,51 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
         editor.clear();
         editor.commit();
+    }
+
+    public void getUserInformation(){
+        /**
+         * Retrieve user information from server
+         */
+        final RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
+        StringRequest userRequest = new StringRequest(Request.Method.GET, accountUrl+email,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject profile = new JSONObject(response);
+                            accountCredit = String.valueOf(profile.optDouble("credit"));
+                            name = profile.optString("name");
+
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    accountCredit +"You are successfully logged in!!", Toast.LENGTH_SHORT);
+                            toast.show();
+                            progressDialog.dismiss();
+                            SharedPreferences.Editor sessionEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
+                            sessionEditor.putString("email", email);
+                            sessionEditor.putString("userAccountCredit", accountCredit);
+                            sessionEditor.commit();
+                            Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(loginIntent);
+                            finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        requestQueue.stop();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Error loading profile", Toast.LENGTH_SHORT);
+                toast.show();
+                error.printStackTrace();
+                requestQueue.stop();
+            }
+        });
+        requestQueue.add(userRequest);
+        /**
+         * Retrieve receipts from server end
+         */
     }
 }

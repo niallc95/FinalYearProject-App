@@ -1,17 +1,32 @@
 package software_project.com.hoarder;
 
+import android.app.Activity;
+import android.widget.EditText;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.Objects;
+
+import software_project.com.hoarder.Activity.LoginActivity;
+import software_project.com.hoarder.Object.Item;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * Unit tests for the EmailValidator logic.
  */
-public class ExampleUnitTest {
+public class ExampleUnitTest extends LoginActivity{
+
+    EditText emailText = (EditText) findViewById(R.id.input_email);
+    EditText passwordText = (EditText) findViewById(R.id.input_password);
+
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void emailValidator_CorrectEmailSimple_ReturnsTrue() {
+        emailText.setText("test@test.com");
+        passwordText.setText("notAPassword");
+        login();
+        assertFalse(statusCode.equals("200"));
     }
 }

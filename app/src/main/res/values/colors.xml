@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#248645</color>
-    <color name="colorPrimaryDark">#106C2F</color>
-    <color name="colorPrimaryLight">#409C5F</color>
+    <color name="colorPrimary">#20B2AA</color>
+    <color name="colorPrimaryDark">#008B8B</color>
+    <color name="colorPrimaryLight">#48D1CC</color>
     <color name="PaleGreen">#98FB98</color>
     <color name="SpringGreen">#00FF7F</color>
     <color name="white">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="textPrimary">#212121</color>
+    <color name="black">#212121</color>
     <color name="textSecondary">#757575</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorAccent">#20B2AA</color>
     <color name="silver">#C0C0C0</color>
-    <color name="Red">#F00</color>
+    <color name="lightGrey">#d3d3d3</color>
+    <color name="veryLightGrey">#E8E8EE</color>
+    <color name="Red">#7f0000</color>
+    <color name="slate">#5a6773</color>
+    <color name="bg">#f5f5f5</color>
+
+    <color name="accent">#20B2AA</color>
+    <color name="icon">#666666</color>
+
+    <color name="button_bg_disabled">#cbcbcc</color>
 </resources>

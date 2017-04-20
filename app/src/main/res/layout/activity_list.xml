@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".Activity.PaymentActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/orderText"
+        android:text="Shopping List:"
+        android:layout_below="@+id/headerLayout"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/black"
+        android:textSize="18sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:id="@+id/listDivider"
+        android:layout_below="@+id/orderText"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="6dp"
+        android:layout_height="0.8dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/shoppingListView"
+        android:background="@drawable/list_bg"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/listDivider"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
+
+    <ImageView
+        android:id="@+id/empty_view"
+        android:layout_width="200dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="80dp"
+        android:src="@drawable/empty_receipts"
+        android:textSize="25sp"
+        android:elevation="4dp"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_height="250dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/headerLayout"
+        android:elevation="6dp"
+        android:background="@color/white"
+        android:layout_height="60dp"
+        android:layout_below="@+id/empty_view"
+        android:layout_alignParentStart="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:id="@+id/footerDivider"
+            android:layout_alignParentBottom="true"
+            android:layout_height="0.8dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:clickable="true"
+            auto:fabSize="mini"
+            android:src="@drawable/ic_action_clear"
+            android:tint="@color/white"
+            android:layout_marginEnd="19dp"
+            android:id="@+id/deleteAllBtn"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            auto:backgroundTint="@color/Red"
+            android:layout_height="80dp"
+            android:layout_width="80dp" />
+
+        <TextView
+            android:text="0"
+            android:id="@+id/itemCountListTxt"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignBaseline="@+id/itemCountListLabel"
+            android:layout_alignBottom="@+id/itemCountListLabel"
+            android:layout_toEndOf="@+id/itemCountListLabel"
+            android:layout_marginStart="30dp" />
+
+        <TextView
+            android:text="Number of Items:"
+            android:id="@+id/itemCountListLabel"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

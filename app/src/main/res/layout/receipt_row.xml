@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:scaleType="centerCrop"
+    android:layout_height="80dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:id="@+id/receipt_row_divider"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1dp" />
+
+    <TextView
+        android:text="date"
+        android:id="@+id/dateTxt"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="time"
+        android:id="@+id/timeTxt"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:text="1246577"
+        android:id="@+id/refNoTxt"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginRight="7dp"
+        android:gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_alignBaseline="@+id/refNoLabel"
+        android:layout_alignBottom="@+id/refNoLabel"
+        android:layout_toEndOf="@+id/refNoLabel" />
+
+    <TextView
+        android:text="Total Cost:"
+        android:id="@+id/totalCostLabel"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:layout_below="@+id/refNoLabel"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="80dp"/>
+
+    <TextView
+        android:text="€50.00"
+        android:id="@+id/totalCostTxt"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginRight="7dp"
+        android:gravity="center"
+        android:layout_alignBaseline="@+id/totalCostLabel"
+        android:layout_alignBottom="@+id/totalCostLabel"
+        android:layout_alignStart="@+id/refNoTxt" />
+
+    <TextView
+        android:text="Reference Number:"
+        android:id="@+id/refNoLabel"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_alignStart="@+id/totalCostLabel" />
+
+    <LinearLayout
+        android:elevation="8dp"
+        android:background="@drawable/bag"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="9dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/totalCostLabel"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:text="4"
+            android:id="@+id/itemCountTxt"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content" />
+
+    </LinearLayout>
+
+</RelativeLayout>

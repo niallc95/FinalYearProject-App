@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,17 +19,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import software_project.com.hoarder.R;
+
+/**
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: Login screen for the user
+ */
 
 public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
@@ -39,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordText;
     EditText emailText;
     String serverUrl = "http://hoarder-app.herokuapp.com/login";
-    String accountUrl = "https://hoarder-app.herokuapp.com/user/";
-    String email,name,accountCredit;
+    String email;
+    public static String statusCode;
     ProgressDialog progressDialog;
     public static final String SESSION_NAME = "session";
 
@@ -51,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
 
         clear();
 
-        emailText = (EditText) findViewById(R.id.input_email);
-        passwordText = (EditText) findViewById(R.id.input_password);
-        loginBtn = (Button) findViewById(R.id.btn_login);
-        signupLink = (TextView) findViewById(R.id.link_signup);
+        emailText = (EditText) findViewById(R.id.login_email_address);
+        passwordText = (EditText) findViewById(R.id.login_password);
+        loginBtn = (Button) findViewById(R.id.loginBtn);
+        signupLink = (TextView) findViewById(R.id.signupLink);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +80,9 @@ public class LoginActivity extends AppCompatActivity {
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
                 // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
+                Intent signupIntent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(signupIntent);
+                finish();
             }
         });
     }
@@ -112,7 +115,17 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        getUserInformation();
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "You are successfully logged in!!", Toast.LENGTH_SHORT);
+                        toast.show();
+                        statusCode = "200";
+                        progressDialog.dismiss();
+                        SharedPreferences.Editor sessionEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
+                        sessionEditor.putString("email", email);
+                        sessionEditor.commit();
+                        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(loginIntent);
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {
@@ -122,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                                 "Login credentials incorrect. Please try again!!", Toast.LENGTH_SHORT);
                         toast.show();
                         error.printStackTrace();
+                        statusCode = "200";
                         progressDialog.dismiss();
                         loginBtn.setEnabled(true);
                     }
@@ -136,14 +150,8 @@ public class LoginActivity extends AppCompatActivity {
         requestQueue.add(postRequest);
     }
 
-    @Override
-    public void onBackPressed() {
-        // back press disable
-        moveTaskToBack(true);
-    }
-
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed. Please try again!!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Login failed. Please try again!", Toast.LENGTH_LONG).show();
         loginBtn.setEnabled(true);
     }
 
@@ -154,14 +162,14 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
 
         if (email.isEmpty()||!email.contains("@")){
-            emailText.setError("enter a valid email address");
+            emailText.setError("Please enter a valid email address");
             valid = false;
         } else {
             emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 6 || password.length() > 13) {
+            passwordText.setError("Invalid password.Password must be between 6 and 13 alphanumeric characters");
             valid = false;
         } else {
             passwordText.setError(null);
@@ -173,51 +181,5 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
         editor.clear();
         editor.commit();
-    }
-
-    public void getUserInformation(){
-        /**
-         * Retrieve user information from server
-         */
-        final RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-        StringRequest userRequest = new StringRequest(Request.Method.GET, accountUrl+email,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject profile = new JSONObject(response);
-                            accountCredit = String.valueOf(profile.optDouble("credit"));
-                            name = profile.optString("name");
-
-                            Toast toast = Toast.makeText(getApplicationContext(),
-                                    accountCredit +"You are successfully logged in!!", Toast.LENGTH_SHORT);
-                            toast.show();
-                            progressDialog.dismiss();
-                            SharedPreferences.Editor sessionEditor = getSharedPreferences(SESSION_NAME, MODE_PRIVATE).edit();
-                            sessionEditor.putString("email", email);
-                            sessionEditor.putString("userAccountCredit", accountCredit);
-                            sessionEditor.commit();
-                            Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(loginIntent);
-                            finish();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        requestQueue.stop();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Error loading profile", Toast.LENGTH_SHORT);
-                toast.show();
-                error.printStackTrace();
-                requestQueue.stop();
-            }
-        });
-        requestQueue.add(userRequest);
-        /**
-         * Retrieve receipts from server end
-         */
     }
 }

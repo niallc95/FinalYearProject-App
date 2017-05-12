@@ -7,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.Object.List;
 import software_project.com.hoarder.R;
-
-/**
- * Created by Niall on 22/11/2016.
- */
 
 public class ShoppingListArrayAdapter extends ArrayAdapter<List> {
 
@@ -26,6 +23,7 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<List> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         // Get the item data for this position
         List list = getItem(position);
 
@@ -34,13 +32,19 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<List> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row, parent, false);
         }
 
+        View divider = convertView.findViewById(R.id.rowDivider);
+
+        if(position==0){ // for two rows if(position==0 || position==1)
+            divider.setVisibility(View.GONE);
+        }
+
         // Find views
         TextView nameTxt = (TextView) convertView.findViewById(R.id.nameTxt);
         TextView priceTxt = (TextView) convertView.findViewById(R.id.priceTxt);
 
         // Populate the corresponding fields for each item
         nameTxt.setText(String.valueOf(list.getName()));
-        priceTxt.setText("€"+String.valueOf(list.getPrice()));
+        priceTxt.setText(String.valueOf(currencyFormatter.format(Double.parseDouble(list.getPrice()))));
 
         return convertView;
     }

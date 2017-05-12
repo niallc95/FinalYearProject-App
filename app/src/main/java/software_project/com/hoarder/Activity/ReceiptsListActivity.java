@@ -8,18 +8,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+import software_project.com.hoarder.Adapter.CustomComparator;
 import software_project.com.hoarder.Adapter.ReceiptArrayAdapter;
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.Object.Receipt;
 import software_project.com.hoarder.R;
 
+/**
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: This screen consists of a list of the users previous orders/receipts. When the user clicks on a receipt they will be
+ *              brought to a detailed receipt view for that specific transaction.
+ */
 
 public class ReceiptsListActivity extends AppCompatActivity{
     int receiptCount = 0;
@@ -29,7 +38,8 @@ public class ReceiptsListActivity extends AppCompatActivity{
     ArrayList<Item> receiptItemsList;
     ListView receiptList;
     View emptyView;
-    String date,time,refNo,itemCount,total,discount;
+    String date,time,refNo,itemCount,total,discount, recentOrder;
+    RelativeLayout footer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,9 @@ public class ReceiptsListActivity extends AppCompatActivity{
         emptyView = findViewById(R.id.empty_view);
         receiptList.setEmptyView(emptyView);
 
+        footer = (RelativeLayout) findViewById(R.id.footerLayout);
+        footer.setVisibility(footer.GONE);
+
         SharedPreferences session = getSharedPreferences(SESSION_NAME, MODE_PRIVATE);
         Gson gson = new Gson();
         String json = session.getString("receipt", null);
@@ -57,18 +70,20 @@ public class ReceiptsListActivity extends AppCompatActivity{
                 emptyView.setVisibility(emptyView.GONE);
                 receiptList.setEmptyView(null);
                 receiptCount = receiptArray.size();
+                footer.setVisibility(footer.VISIBLE);
             }
 
+            Collections.sort(receiptArray, new CustomComparator());
             // Create the adapter
             ReceiptArrayAdapter receiptArrayAdapter = new ReceiptArrayAdapter(this,receiptArray);
             // Attach the adapter to the list view
             receiptList.setAdapter(receiptArrayAdapter);
 
             receiptList.setOnItemClickListener(new itemClick());
-
+            recentOrder= receiptArray.get(0).getDate();
+            recentOrderTxt.setText(recentOrder);
+            receiptCountTxt.setText(String.valueOf(receiptCount));
         }
-        receiptCountTxt.setText(String.valueOf(receiptCount));
-
     }
 
     @Override

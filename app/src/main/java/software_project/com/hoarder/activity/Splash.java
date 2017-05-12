@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by Niall on 27/09/2016.
- * Splash/load screen for start of application (First screen of application)
- * This activity utilises a theme from styles.xml to insure the user is not waiting while the app is loading.
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: Splash/load screen for start of application (First screen of application)
+ *              This activity utilises a theme from styles.xml to insure the user is not
+ *              waiting while the app is loading.
  */
 
 public class Splash extends AppCompatActivity {
@@ -16,7 +18,7 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Launch Login once loaded
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, IntroductionActivity.class);
         startActivity(intent);
         finish();
     }

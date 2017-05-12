@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
-/**
- * Created by Niall on 22/11/2016.
- */
-
 public class ReceiptItemAdapter extends ArrayAdapter<Item> {
 
 
@@ -33,7 +29,7 @@ public class ReceiptItemAdapter extends ArrayAdapter<Item> {
 
         // Inflate the view only if an existing view is not being reused
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.checkout_row, parent, false);
         }
 
         // Find views
@@ -43,6 +39,7 @@ public class ReceiptItemAdapter extends ArrayAdapter<Item> {
 
 
         // Populate the corresponding fields for each item
+        assert item != null;
         nameTxt.setText(String.valueOf(item.getName()));
         priceTxt.setText(String.valueOf(currencyFormatter.format(item.getPrice()*item.getQuantity())));
         quantityCountTxt.setText("X"+String.valueOf(item.getQuantity()));

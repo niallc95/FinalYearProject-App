@@ -5,42 +5,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:scaleType="centerCrop"
-    android:layout_height="80dp">
-
-    <View
-        android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        android:id="@+id/receipt_row_divider"
-        android:layout_alignParentBottom="true"
-        android:layout_height="1dp" />
-
-
-    <TextView
-        android:text="date"
-        android:id="@+id/dateTxt"
-        android:layout_width="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="time"
-        android:id="@+id/timeTxt"
-        android:layout_width="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"/>
+    android:layout_height="110dp">
 
     <TextView
         android:text="1246577"
@@ -57,32 +22,22 @@
         android:layout_alignBottom="@+id/refNoLabel"
         android:layout_toEndOf="@+id/refNoLabel" />
 
-    <TextView
-        android:text="Total Cost:"
-        android:id="@+id/totalCostLabel"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/lightGrey"
+        android:id="@+id/receipt_row_divider"
+        android:layout_height="1dp"
         android:layout_below="@+id/refNoLabel"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="80dp"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
-    <TextView
-        android:text="€50.00"
-        android:id="@+id/totalCostTxt"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_marginRight="7dp"
-        android:gravity="center"
-        android:layout_alignBaseline="@+id/totalCostLabel"
-        android:layout_alignBottom="@+id/totalCostLabel"
-        android:layout_alignStart="@+id/refNoTxt" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/bg"
+        android:id="@+id/receipts_divider"
+        android:layout_height="5dp"
+        android:layout_alignParentBottom="true"/>
 
     <TextView
         android:text="Reference Number:"
@@ -93,8 +48,23 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
-        android:layout_marginTop="15dp"
-        android:layout_alignStart="@+id/totalCostLabel" />
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:text="time"
+        android:id="@+id/timeTxt"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginEnd="13dp"
+        android:layout_alignBaseline="@+id/refNoTxt"
+        android:layout_alignBottom="@+id/refNoTxt"
+        android:layout_alignParentEnd="true" />
 
     <LinearLayout
         android:elevation="8dp"
@@ -102,11 +72,13 @@
         android:backgroundTint="@color/colorPrimary"
         android:gravity="center"
         android:layout_marginLeft="8dp"
-        android:layout_marginStart="9dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignBottom="@+id/totalCostLabel"
-        android:layout_alignParentStart="true">
+        android:id="@+id/iconLayoutReceiptRow"
+        android:layout_marginStart="8dp"
+        android:layout_below="@+id/receipt_row_divider"
+        android:layout_alignStart="@+id/refNoLabel"
+        android:layout_marginTop="8dp">
 
 
         <TextView
@@ -122,5 +94,44 @@
             android:layout_width="wrap_content" />
 
     </LinearLayout>
+
+    <TextView
+        android:text="Total Cost:"
+        android:id="@+id/totalCostLabel"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:layout_marginEnd="14dp"
+        android:layout_alignBottom="@+id/iconLayoutReceiptRow"
+        android:layout_toStartOf="@+id/totalCostTxt" />
+
+    <TextView
+        android:text="€50.00"
+        android:id="@+id/totalCostTxt"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:layout_alignBaseline="@+id/totalCostLabel"
+        android:layout_alignBottom="@+id/totalCostLabel"
+        android:layout_toEndOf="@+id/refNoTxt" />
+
+    <TextView
+        android:text="date"
+        android:id="@+id/dateTxt"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_above="@+id/totalCostLabel"
+        android:layout_alignStart="@+id/totalCostLabel"
+        android:layout_marginBottom="9dp" />
 
 </RelativeLayout>

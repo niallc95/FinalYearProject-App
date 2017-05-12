@@ -3,9 +3,6 @@ package software_project.com.hoarder.Object;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by Niall on 02/02/2017.
- */
 public class Receipt implements Serializable {
     private String date;
     private String time;

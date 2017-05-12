@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,23 +13,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/receiptTotalHeaderTxt"
-        android:text="€0.00"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_toEndOf="@+id/receiptTotalHeaderText"
-        android:layout_marginLeft="3dp"
-        android:layout_alignParentTop="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/receiptItemCountHeaderTxt"
-        android:text="(1 Item)"
+        android:text="(1)"
         android:fontFamily="sans-serif-condensed"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_alignBaseline="@+id/receiptTotalHeaderTxt"
         android:layout_alignBottom="@+id/receiptTotalHeaderTxt"
         android:layout_toEndOf="@+id/receiptTotalHeaderTxt"
@@ -37,103 +26,48 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/receiptTotalHeaderText"
-        android:text="Total:"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_alignParentTop="true"
-        android:textStyle="normal|bold"
-        android:layout_marginLeft="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/receiptDateHeaderText"
-        android:text="Date:"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/receiptTotalHeaderText"
-        android:textStyle="normal|bold"
-        android:layout_marginLeft="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/receiptTimeHeaderText"
-        android:text="Time:"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/receiptTotalHeaderText"
-        android:textStyle="normal|bold"
-        android:layout_toStartOf="@+id/receiptTimeHeaderTxt"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/receiptTimeHeaderTxt"
-        android:text="0:00"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="3dp"
-        android:layout_below="@+id/receiptTotalHeaderTxt"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:background="@color/silver"
-        android:id="@+id/receiptListDivider"
-        android:layout_marginTop="5dp"
-        android:layout_height="1dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_below="@+id/receiptDateHeaderText"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/receiptDateHeaderTxt"
         android:text="02/02/02"
         android:fontFamily="sans-serif-condensed"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp"
+        android:textSize="14sp"
         android:layout_marginLeft="3dp"
-        android:layout_below="@+id/receiptTotalHeaderTxt"
-        android:layout_toEndOf="@+id/receiptDateHeaderText" />
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/receiptTotalHeaderTxt"
+        android:text="€0.00"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginLeft="3dp"
+        android:layout_alignBaseline="@+id/receiptTotalHeaderText"
+        android:layout_alignBottom="@+id/receiptTotalHeaderText"
+        android:layout_toEndOf="@+id/receiptTotalHeaderText"
+        android:layout_marginStart="7dp" />
 
     <RelativeLayout
         android:background="@color/white"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/receiptListDivider"
-        android:layout_centerHorizontal="true"
         android:id="@+id/ReceiptViewLayout"
-        android:layout_width="340dp"
-        android:layout_height="470dp">
-
-        <ListView
-            android:layout_width="match_parent"
-            android:id="@+id/receiptItemList"
-            android:layout_below="@+id/receiptTopDivider"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:layout_height="260dp" />
+        android:layout_height="470dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="360dp"
+        android:layout_below="@+id/receiptPaymentStatusText"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/receiptRefNoTxt"
             android:text="A000001"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/black"
+            android:fontFamily="serif"
+            android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:layout_marginEnd="14dp"
             android:layout_alignParentTop="true"
@@ -147,7 +81,7 @@
             android:id="@+id/receiptRefNoText"
             android:text="Reference number:"
             android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:layout_marginStart="18dp"
             android:layout_alignBaseline="@+id/receiptRefNoTxt"
@@ -162,7 +96,7 @@
             android:layout_height="1dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/receiptRefNoTxt"
             android:layout_centerHorizontal="true" />
 
@@ -173,7 +107,7 @@
             android:layout_height="1dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="2dp"
             android:layout_below="@+id/receiptItemList"
             android:layout_centerHorizontal="true" />
 
@@ -184,7 +118,7 @@
             android:text="€0.00"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:layout_alignBaseline="@+id/receiptDiscountText"
             android:layout_alignBottom="@+id/receiptDiscountText"
             android:layout_alignStart="@+id/receiptSubtotalTxt" />
@@ -196,7 +130,7 @@
             android:text="TOTAL:"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_marginBottom="8dp"
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/receiptDiscountText"
@@ -209,7 +143,7 @@
             android:text="€0.00"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:layout_alignBaseline="@+id/receiptSubtotalText"
             android:layout_alignBottom="@+id/receiptSubtotalText"
             android:layout_alignEnd="@+id/receiptRefNoTxt" />
@@ -221,7 +155,7 @@
             android:text="€0.00"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="normal|bold"
             android:layout_alignBaseline="@+id/receiptTotalText"
             android:layout_alignBottom="@+id/receiptTotalText"
@@ -234,7 +168,7 @@
             android:text="€0.00"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:layout_alignBaseline="@+id/receiptVatText"
             android:layout_alignBottom="@+id/receiptVatText"
             android:layout_alignStart="@+id/receiptDiscountTxt" />
@@ -246,7 +180,7 @@
             android:text="VAT:"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:layout_marginBottom="8dp"
             android:layout_above="@+id/receiptTotalText"
             android:layout_alignStart="@+id/receiptTotalText" />
@@ -270,11 +204,74 @@
             android:text="SUBTOTAL:"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:layout_above="@+id/receiptDiscountTxt"
             android:layout_alignStart="@+id/receiptBottomDivider"
             android:layout_marginBottom="8dp" />
 
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/receiptItemList"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/receiptTopDivider"
+            android:layout_alignParentStart="true"
+            android:layout_height="290dp" />
+
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/receiptStoreImg"
+        android:layout_alignTop="@+id/receiptDateHeaderTxt"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp" />
+
+    <TextView
+        android:text="Hoarder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/receiptDateHeaderTxt"
+        android:layout_alignStart="@+id/receiptTotalHeaderText"
+        android:id="@+id/receiptStoreHeaderText"
+        android:textStyle="normal|bold"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/receiptTotalHeaderText"
+        android:text="Total:"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="14dp"
+        android:layout_below="@+id/receiptStoreHeaderText"
+        android:layout_toEndOf="@+id/receiptStoreImg" />
+
+    <TextView
+        android:text="Payment:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/receiptTotalHeaderTxt"
+        android:layout_alignStart="@+id/receiptTotalHeaderText"
+        android:id="@+id/receiptPaymentStatusText"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:text="Complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/receiptPaymentStatusTxt"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/SpringGreen"
+        android:layout_below="@+id/receiptItemCountHeaderTxt"
+        android:layout_toEndOf="@+id/receiptPaymentStatusText"
+        android:layout_marginStart="7dp" />
 
 </RelativeLayout>

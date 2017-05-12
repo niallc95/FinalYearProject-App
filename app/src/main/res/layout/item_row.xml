@@ -12,8 +12,7 @@
         android:background="@color/bg"
         android:layout_height="2dp"
         android:id="@+id/divider4"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentBottom="true" />
 
     <ImageView
         android:id="@+id/categoryView"

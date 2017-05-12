@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Hoarder</string>
 
+    <string name="hoarder_email">info@hoarder.com</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB4cAPD5nnPnLuacE62_UPCCVwkESxBmaU</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -22,4 +27,12 @@
     <string name="customer_service">Customer Service</string>
     <string name="more">More</string>
     <string name="reference_number">Reference Number</string>
+    <string name="checkout_summary">Checkout Summary</string>
+    <string name="contact_us">contact us</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="receipts">Receipts</string>
+    <string name="orders_complete">Orders Complete</string>
+    <string name="_0_00">€0.00</string>
+    <string name="edit_password">Edit Password</string>
 </resources>

@@ -34,8 +34,11 @@ import software_project.com.hoarder.Object.List;
 import software_project.com.hoarder.R;
 
 /**
- * Created by Niall on 06/02/2017.
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: This screen allows users to visualise items they have added to their cart
  */
+
 
 public class ListActivity extends AppCompatActivity {
     public static final String SESSION_NAME = "session";
@@ -211,9 +214,6 @@ public class ListActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(clearListRequest);
-        /**
-         * generate receipt for transaction end
-         */
     }
 
 }

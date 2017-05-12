@@ -7,6 +7,13 @@
     android:scaleType="centerCrop"
     android:layout_height="wrap_content">
 
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_height="1dp"
+        android:id="@+id/rowDivider"
+        android:layout_alignParentTop="true" />
+
     <TextView
         android:text="$50.50"
         android:id="@+id/priceTxt"
@@ -18,18 +25,6 @@
         android:layout_alignParentRight="true"
         android:layout_margin="9dp"
         android:fontFamily="sans-serif-condensed"/>
-
-    <TextView
-        android:text="X100"
-        android:id="@+id/quantityCountTxt"
-        android:textColor="@color/Red"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:layout_marginLeft="9dp"
-        android:layout_marginRight="9dp"
-        android:layout_alignBaseline="@+id/priceTxt" />
 
     <TextView
         android:text="TextView"

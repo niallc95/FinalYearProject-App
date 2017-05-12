@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
-/**
- * Created by Niall on 22/11/2016.
- */
-
 public class CheckoutArrayAdapter extends ArrayAdapter<Item> {
 
 

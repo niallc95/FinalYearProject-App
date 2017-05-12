@@ -18,7 +18,9 @@ import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
 /**
- * Created by Niall on 04/04/2017.
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: This screen consists of a detailed receipt for a specific transaction
  */
 
 public class ReceiptsViewActivity extends AppCompatActivity {
@@ -42,7 +44,6 @@ public class ReceiptsViewActivity extends AppCompatActivity {
         receiptItemList = (ListView)findViewById(R.id.receiptItemList);
         refNoTxt = (TextView)findViewById(R.id.receiptRefNoTxt);
         dateTxt = (TextView)findViewById(R.id.receiptDateHeaderTxt);
-        timeTxt = (TextView)findViewById(R.id.receiptTimeHeaderTxt);
         headerTotalTxt = (TextView)findViewById(R.id.receiptTotalHeaderTxt);
         countTxt = (TextView)findViewById(R.id.receiptItemCountHeaderTxt);
         subtotalTxt = (TextView)findViewById(R.id.receiptSubtotalTxt);
@@ -61,7 +62,6 @@ public class ReceiptsViewActivity extends AppCompatActivity {
         String json = session.getString("receiptItems", null);
         refNoTxt.setText(refNo);
         dateTxt.setText(date);
-        timeTxt.setText(time);
         headerTotalTxt.setText(currencyFormatter.format(Double.parseDouble(total)));
         countTxt.setText("("+itemCount+")");
 

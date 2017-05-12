@@ -1,6 +1,7 @@
 package software_project.com.hoarder.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,6 @@ import java.util.ArrayList;
 import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.Object.Receipt;
 import software_project.com.hoarder.R;
-
-/**
- * Created by Niall on 22/11/2016.
- */
 
 public class ReceiptArrayAdapter extends ArrayAdapter<Receipt> {
 

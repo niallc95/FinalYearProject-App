@@ -3,11 +3,6 @@
 
     <group>
         <item
-            android:id="@+id/nav_shopping_cart"
-            android:icon="@drawable/ic_nav_cart"
-            android:tint="@color/colorPrimary"
-            android:title="@string/shopping_cart" />
-        <item
             android:id="@+id/nav_deals"
             android:icon="@drawable/ic_nav_deals"
             android:tint="@color/colorPrimary"
@@ -48,11 +43,7 @@
                     android:icon="@drawable/ic_nav_service"
                     android:tint="@color/colorPrimary"
                     android:title="@string/customer_service" />
-                <item
-                    android:id="@+id/nav_about"
-                    android:icon="@drawable/ic_nav_about"
-                    android:tint="@color/colorPrimary"
-                    android:title="@string/about_us" />
+
                 <item
                     android:id="@+id/nav_locations"
                     android:icon="@drawable/ic_nav_location"

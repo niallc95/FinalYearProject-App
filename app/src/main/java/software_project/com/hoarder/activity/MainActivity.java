@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,11 +18,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,9 +55,11 @@ import software_project.com.hoarder.Object.Receipt;
 import software_project.com.hoarder.R;
 
 /**
- * Created by Niall on 27/09/2016.
- * Main screen for the application which holds the scanning functionality
- * This activity utilises a theme from styles.xml to insure the user is not waiting while the app is loading.
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: Main screen for the application which holds the scanning functionality
+ *              This activity utilises a theme from styles.xml to insure the user is not
+ *              waiting while the app is loading.
  */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -71,10 +76,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<List> listItemArray;
     View emptyView;
     Item getItem;
+    RelativeLayout footer;
     String email,orderCount,credit,creationDate,phoneNumber,name,productName;
     double totalCost,vatValue,productPrice;
     int cartCount;
-    Intent receiptsIntent,profileIntent,listIntent,dealsIntent;
+    Intent receiptsIntent,profileIntent,listIntent,dealsIntent,contactIntent,locationsIntent;
     public static final String SESSION_NAME = "session";
     CartArrayAdapter itemAdapter;
 
@@ -92,12 +98,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         content = (TextView) findViewById(R.id.counterTxt);
         cost = (TextView) findViewById(R.id.costTxt);
         vat = (TextView) findViewById(R.id.vatTxt);
+        footer = (RelativeLayout) findViewById(R.id.footerLayout);
 
         receiptsIntent = new Intent(MainActivity.this, ReceiptsListActivity.class);
         profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
         listIntent = new Intent(MainActivity.this, ListActivity.class);
         dealsIntent = new Intent(MainActivity.this, DealsActivity.class);
+        contactIntent = new Intent(MainActivity.this, ContactActivity.class);
+        locationsIntent = new Intent(MainActivity.this, MapsActivity.class);
 
+        footer.setVisibility(footer.GONE);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -189,11 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_shopping_cart) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "You are already here!", Toast.LENGTH_SHORT);
-            toast.show();
-        }else if (id == R.id.nav_deals) {
+        if (id == R.id.nav_deals) {
             startActivity(dealsIntent);
         } else if (id == R.id.nav_signout) {
             Intent logoutIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -206,11 +212,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_shopping_list) {
             getLists();
         } else if (id == R.id.nav_customer_service) {
-
-        }else if (id == R.id.nav_about) {
-
+            startActivity(contactIntent);
         }else if (id == R.id.nav_locations) {
-
+            startActivity(locationsIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -247,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                 Item item = new Item(name, price, category, 1);
                                 emptyView.setVisibility(emptyView.GONE);
+                                footer.setVisibility(footer.VISIBLE);
                                 cartList.setEmptyView(null);
                                 if(itemArray.size()>0) {
                                     boolean isNew = true;
@@ -583,6 +588,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getValues(){
         cartCount = 0;
+
         for(int i = 0; i < itemArray.size(); i++) {
             int count = itemArray.get(i).getQuantity();
             if(itemArray.get(i).getQuantity()==0){
@@ -590,6 +596,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 itemAdapter.notifyDataSetChanged();
                 if(itemArray.size()==0){
                     cartList.setEmptyView(emptyView);
+                    footer.setVisibility(footer.GONE);
                 }
             }
             cartCount += count;

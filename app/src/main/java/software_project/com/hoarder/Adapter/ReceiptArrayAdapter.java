@@ -17,10 +17,6 @@ import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.Object.Receipt;
 import software_project.com.hoarder.R;
 
-/**
- * Created by Niall on 22/11/2016.
- */
-
 public class ReceiptArrayAdapter extends ArrayAdapter<Receipt> {
 
     final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();

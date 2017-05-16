@@ -25,6 +25,13 @@ import java.util.Map;
 
 import software_project.com.hoarder.R;
 
+/**
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: This screen holds 3 deals that the store has currently and allows the user to add each of these deals to their
+ *              shopping cart
+ */
+
 public class DealsActivity extends AppCompatActivity {
 
     String addListUrl = "https://hoarder-app.herokuapp.com/list/";

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,7 +22,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,7 +30,6 @@ import com.simplify.android.sdk.CardEditor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -42,12 +39,15 @@ import java.util.Random;
 
 import software_project.com.hoarder.Adapter.CheckoutArrayAdapter;
 import software_project.com.hoarder.Object.Item;
-import software_project.com.hoarder.Object.Receipt;
 import software_project.com.hoarder.R;
 
 /**
- * Created by Niall on 30/11/2016.
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: This screen shows the user their checkout summary as well as allowing them to use their store credit to lessen
+ *              the total cost of the transaction before making the payment.
  */
+
 public class PaymentActivity extends AppCompatActivity{
     String serverUrl = "http://hoarder-app.herokuapp.com/payment";
     double credit,total,discount,accountCredit, remainingCredit;
@@ -159,6 +159,11 @@ public class PaymentActivity extends AppCompatActivity{
                         public void onClick(View v) {
                             discount = 0.00;
                             discountText.setText(String.valueOf(currencyFormatter.format(discount)));
+                            remainingCredit = accountCredit - discount;
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "You have " + String.valueOf(currencyFormatter.format(remainingCredit)) + " remaining", Toast.LENGTH_LONG);
+                            toast.show();
+                            getDiscountedCost();
                             dialog.dismiss();
                         }
                     });

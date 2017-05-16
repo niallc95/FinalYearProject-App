@@ -14,10 +14,6 @@ import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.Object.List;
 import software_project.com.hoarder.R;
 
-/**
- * Created by Niall on 22/11/2016.
- */
-
 public class ShoppingListArrayAdapter extends ArrayAdapter<List> {
 
 

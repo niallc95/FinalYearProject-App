@@ -2,9 +2,9 @@ package software_project.com.hoarder.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -25,9 +25,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import software_project.com.hoarder.R;
+
+/**
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: Sign up screen for the user
+ */
 
 public class SignupActivity extends AppCompatActivity {
     Button signupBtn;
@@ -49,8 +53,8 @@ public class SignupActivity extends AppCompatActivity {
         fnameText = (EditText) findViewById(R.id.input_fname);
         lnameText = (EditText) findViewById(R.id.input_lname);
         mobileText = (EditText) findViewById(R.id.input_phone);
-        signupBtn = (Button) findViewById(R.id.btn_signup);
-        loginLink = (TextView) findViewById(R.id.link_login);
+        signupBtn = (Button) findViewById(R.id.signupBtn);
+        loginLink = (TextView) findViewById(R.id.loginLink);
 
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +77,8 @@ public class SignupActivity extends AppCompatActivity {
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
                 // Finish the registration screen and return to the Login activity
+                Intent signupIntent = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(signupIntent);
                 finish();
             }
         });
@@ -115,6 +121,8 @@ public class SignupActivity extends AppCompatActivity {
                                 "Account successfully created!!", Toast.LENGTH_SHORT);
                         toast.show();
                         progressDialog.dismiss();
+                        Intent signupIntent = new Intent(SignupActivity.this, LoginActivity.class);
+                        startActivity(signupIntent);
                         finish();
                     }
                 },
@@ -140,8 +148,14 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "There was a problem creating an account! Please try again!", Toast.LENGTH_LONG).show();
         signupBtn.setEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // back press disable
+        moveTaskToBack(true);
     }
 
     public boolean validate() {

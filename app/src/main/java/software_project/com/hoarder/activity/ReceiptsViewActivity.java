@@ -18,7 +18,9 @@ import software_project.com.hoarder.Object.Item;
 import software_project.com.hoarder.R;
 
 /**
- * Created by Niall on 04/04/2017.
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: This screen consists of a detailed receipt for a specific transaction
  */
 
 public class ReceiptsViewActivity extends AppCompatActivity {

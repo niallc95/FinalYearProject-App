@@ -28,6 +28,12 @@ import java.util.Map;
 
 import software_project.com.hoarder.R;
 
+/**
+ * Author: Niall Curran
+ * Student Number: x13440572
+ * Description: Login screen for the user
+ */
+
 public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     Button loginBtn;
@@ -47,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
 
         clear();
 
-        emailText = (EditText) findViewById(R.id.input_email);
-        passwordText = (EditText) findViewById(R.id.input_password);
-        loginBtn = (Button) findViewById(R.id.btn_login);
-        signupLink = (TextView) findViewById(R.id.link_signup);
+        emailText = (EditText) findViewById(R.id.login_email_address);
+        passwordText = (EditText) findViewById(R.id.login_password);
+        loginBtn = (Button) findViewById(R.id.loginBtn);
+        signupLink = (TextView) findViewById(R.id.signupLink);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +80,9 @@ public class LoginActivity extends AppCompatActivity {
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
                 // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
+                Intent signupIntent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(signupIntent);
+                finish();
             }
         });
     }
@@ -143,14 +150,8 @@ public class LoginActivity extends AppCompatActivity {
         requestQueue.add(postRequest);
     }
 
-    @Override
-    public void onBackPressed() {
-        // back press disable
-        moveTaskToBack(true);
-    }
-
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed. Please try again!!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Login failed. Please try again!", Toast.LENGTH_LONG).show();
         loginBtn.setEnabled(true);
     }
 
@@ -161,14 +162,14 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
 
         if (email.isEmpty()||!email.contains("@")){
-            emailText.setError("enter a valid email address");
+            emailText.setError("Please enter a valid email address");
             valid = false;
         } else {
             emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 6 || password.length() > 13) {
+            passwordText.setError("Invalid password.Password must be between 6 and 13 alphanumeric characters");
             valid = false;
         } else {
             passwordText.setError(null);

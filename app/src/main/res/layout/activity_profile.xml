@@ -4,18 +4,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/profileHeaderLayout"
-        android:orientation="horizontal"
-        android:background="@drawable/grocery"
-        android:layout_height="140dp" />
-    <View
-        android:layout_width="match_parent"
-        android:background="@color/lightGrey"
-        android:layout_height="1.5dp"
-        android:id="@+id/profileHeadDivider"
-        android:layout_below="@+id/profileHeaderLayout" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,44 +12,49 @@
         android:background="@color/white"
         android:layout_marginRight="7dp"
         android:layout_marginLeft="7dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="175dp" >
+        android:layout_marginTop="15dp"
+        android:layout_height="190dp" >
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"/>
+
+        <View
+            android:layout_height="match_parent"
+            android:background="@color/lightGrey"
+            android:id="@+id/profileLayoutDividerRight"
+            android:layout_alignParentRight="true"
+            android:layout_width="1dp" />
+
+        <View
+            android:layout_height="match_parent"
+            android:background="@color/lightGrey"
+            android:id="@+id/profileLayoutDividerLeft"
+            android:layout_alignParentLeft="true"
+            android:layout_width="1dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@mipmap/ic_launcher"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/profileIcon"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
 
-        <TextView
-            android:text="Name here"
-            android:id="@+id/nameTxt"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_alignBottom="@+id/profileIcon"
-            android:layout_toEndOf="@+id/profileIcon"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:text="EDIT"
-            android:id="@+id/editLink"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="9dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp" />
         <View
             android:layout_width="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/lightGrey"
+            android:background="@color/bg"
             android:layout_marginTop="10dp"
             android:layout_height="1dp"
             android:id="@+id/userDataDivider"
@@ -125,101 +118,220 @@
             android:layout_width="wrap_content"
             android:layout_above="@+id/mobileLabel"
             android:layout_alignStart="@+id/mobileNumberText" />
+
+        <TextView
+            android:text="Name here"
+            android:id="@+id/nameTxt"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_above="@+id/userDataDivider"
+            android:layout_toEndOf="@+id/emailLabel"
+            android:layout_marginStart="31dp" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <TableLayout
+        android:id="@+id/profileTableLayout"
         android:layout_width="match_parent"
-        android:id="@+id/itemsLayout"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        android:layout_marginRight="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="30dp"
-        android:layout_height="115dp">
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
 
         <View
             android:layout_width="match_parent"
             android:background="@color/lightGrey"
-            android:layout_height="1dp"
-            android:id="@+id/topDivider"
-            android:layout_alignParentStart="true" />
+            android:id="@+id/tableDividerBottom"
+            android:layout_height="1dp" />
+        <TableRow
+            android:layout_width="100dp"
+            android:background="@color/white"
+            android:id="@+id/creditRowProfile"
+            android:layout_height="100dp">
 
-        <ImageView
-            app:srcCompat="@drawable/ic_nav_cart"
-            android:layout_marginStart="8dp"
-            android:id="@+id/cartIcon"
-            android:tint="@color/colorPrimary"
-            android:layout_below="@+id/creditDivider"
-            android:layout_alignParentStart="true"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            <ImageView
+                app:srcCompat="@drawable/ic_icon_credit"
+                android:id="@+id/creditIcon"
+                android:tint="@color/colorPrimary"
+                android:layout_height="match_parent"
+                android:layout_width="100dp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/lightGrey"
-            android:layout_marginTop="7dp"
-            android:layout_height="1dp"
-            android:id="@+id/creditDivider"
-            android:layout_below="@+id/creditIcon"
-            android:layout_alignParentStart="true" />
+            <TextView
+                android:text="Store Credit"
+                android:id="@+id/creditLabel"
+                android:layout_weight="1"
+                android:layout_height="55dp"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_width="150dp" />
 
-        <TextView
-            android:text="Store Credit:"
-            android:id="@+id/creditLabel"
-            android:layout_weight="1"
-            android:layout_height="55dp"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_alignBottom="@+id/creditDivider"
-            android:layout_toEndOf="@+id/creditIcon" />
+            <TextView
+                android:text="@string/_0_00"
+                android:id="@+id/storeCreditAmntTxt"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:layout_height="55dp"
+                android:layout_width="wrap_content"
+                android:textAlignment="center" />
 
-        <ImageView
-            app:srcCompat="@drawable/ic_icon_credit"
-            android:id="@+id/creditIcon"
-            android:layout_width="50dp"
-            android:tint="@color/colorPrimary"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/cartIcon" />
-
-        <TextView
-            android:text="€3.00"
-            android:id="@+id/storeCreditAmntTxt"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:layout_height="55dp"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="14dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:text="42"
-            android:id="@+id/ordersCompleteTxt"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_below="@+id/creditDivider"
-            android:layout_alignEnd="@+id/storeCreditAmntTxt" />
-
-        <TextView
-            android:text="Orders Completed:"
-            android:id="@+id/ordersCompleteLabel"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_alignTop="@+id/creditDivider"
-            android:layout_alignStart="@+id/creditLabel" />
+        </TableRow>
 
         <View
             android:layout_width="match_parent"
             android:background="@color/lightGrey"
-            android:layout_height="1dp"
-            android:id="@+id/BottomDivider"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
-    </RelativeLayout>
+            android:layout_height="1dp"/>
+
+        <TableRow
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:id="@+id/ordersRowProfile">
+
+            <ImageView
+                app:srcCompat="@drawable/ic_nav_cart"
+                android:id="@+id/cartIcon"
+                android:tint="@color/colorPrimary"
+                android:layout_height="match_parent"
+                android:layout_width="100dp" />
+
+            <TextView
+                android:text="@string/orders_complete"
+                android:id="@+id/ordersCompleteText"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="42"
+                android:id="@+id/ordersCompleteTxt"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginStart="10dp"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"/>
+
+        <TableRow
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:id="@+id/receiptListRowProfile">
+
+            <ImageView
+                app:srcCompat="@drawable/ic_nav_receipt"
+                android:id="@+id/receiptIconProfile"
+                android:tint="@color/colorPrimary"
+                android:layout_height="match_parent"
+                android:layout_width="100dp"/>
+
+            <TextView
+                android:text="@string/receipts"
+                android:id="@+id/receiptsLinkLabel"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginStart="16dp" />
+
+            <ImageView
+                app:srcCompat="@drawable/ic_chevron_goto"
+                android:id="@+id/receiptLinkDirection"
+                android:tint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+
+        </TableRow>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"/>
+
+        <TableRow
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:id="@+id/editRowProfile">
+
+            <ImageView
+                app:srcCompat="@drawable/ic_nav_password"
+                android:id="@+id/profileIconProfile"
+                android:tint="@color/colorPrimary"
+                android:layout_height="match_parent"
+                android:layout_width="100dp"/>
+
+            <TextView
+                android:text="@string/edit_password"
+                android:id="@+id/editProfileLinkLabel"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginStart="16dp" />
+
+            <ImageView
+                app:srcCompat="@drawable/ic_chevron_goto"
+                android:id="@+id/profileLinkDirection"
+                android:tint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+
+        </TableRow>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"/>
+
+        <TableRow
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:id="@+id/shoppingListRowProfile">
+
+            <ImageView
+                app:srcCompat="@drawable/ic_nav_list"
+                android:id="@+id/listIconProfile"
+                android:tint="@color/colorPrimary"
+                android:layout_height="match_parent"
+                android:layout_width="100dp"/>
+
+            <TextView
+                android:text="@string/shopping_list"
+                android:id="@+id/shoppingListLabel"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginStart="16dp" />
+
+            <ImageView
+                app:srcCompat="@drawable/ic_chevron_goto"
+                android:id="@+id/listLinkDirection"
+                android:tint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_height="1dp"/>
+    </TableLayout>
 </LinearLayout>

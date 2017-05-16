@@ -7,8 +7,7 @@
         android:smallScreens="true"
         android:normalScreens="true"
         android:largeScreens="true"
-        android:anyDensity="true"
-        />
+        android:anyDensity="true" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -33,9 +32,32 @@
         </activity>
 
         <activity
+            android:name=".Activity.IntroductionActivity"
+            android:theme="@style/AppTheme.introScreens"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
             android:name=".Activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
+            android:name=".Activity.ContactActivity"
+            android:label="@string/contact_us"
+            android:parentActivityName=".Activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
+            android:name=".Activity.MapsActivity"
+            android:label="@string/hoarder_locations"
+            android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
@@ -72,7 +94,7 @@
 
         <activity
             android:name=".Activity.DealsActivity"
-            android:label="Hot Deals"
+            android:label="@string/hot_deals"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
@@ -88,7 +110,7 @@
 
         <activity
             android:name=".Activity.ReceiptsViewActivity"
-            android:label="My Receipt"
+            android:label="@string/checkout_summary"
             android:parentActivityName=".Activity.ReceiptsListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
@@ -101,6 +123,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
     </application>
 
